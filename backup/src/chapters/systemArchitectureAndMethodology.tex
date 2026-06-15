@@ -1,0 +1,43 @@
+\chapter{SYSTEM ARCHITECTURE AND METHODOLOGY}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm and 1.8cm, auto,
+        block/.style={rectangle, draw, fill=blue!10, text width=2.8cm, text centered, rounded corners, minimum height=1.2cm},
+        database/.style={cylinder, draw, shape border rotate=90, fill=gray!20, text width=1.8cm, text centered, minimum height=2.2cm},
+        line/.style={draw, -latex'}]
+
+        \node [block] (dem) {DEM (Copernicus GLO-30)};
+        \node [block, right=of dem] (ray) {Ray-Casting\\(Horizon Gen)};
+        \node [database, right=of ray] (db) {Reference\\Index};
+    
+        \node [block, below=of dem] (img) {User Image};
+        \node [block, right=of img] (unet) {Skyline\\Segmentation};
+    
+        \node [block, below=3.5cm of db] (engine) {Matching\\\& Ranking Engine};
+        \node [block, below=of engine] (output) {Final\\Localization};
+
+        \path [line] (dem) -- (ray);
+        \path [line] (ray) -- (db);
+        \path [line] (img) -- (unet);
+        \path [line] (db.south) -- (engine.north);
+        \path [line] (unet) -- (engine);
+        \path [line] (engine.south) -- (output.north);
+    \end{tikzpicture}
+    \caption{System Block Diagram showing the interaction between data generation and image processing.}
+    \label{fig:block_diagram}
+\end{figure}
+
+The accuracy of the system is grounded in the Digital Elevation Model (DEM) used to represent the topography. We plan to utilize Copernicus GLO-30 (30m) data. While 10m data is a common baseline, research indicates that for massive Himalayan peaks, 30m resolution is sufficiently representative and offers substantial benefits in reduced database size and faster processing.
+
+To build the search space, the region is sampled using a grid of candidate viewpoints. A baseline grid of 500-meter spacing is proposed for specific target regions like Khumbu or Annapurna. These points are mapped using a metric coordinate system like UTM Zone 45N to ensure uniform distance across rugged terrain, though standard WGS84 coordinates may be used for final storage and mapping to maintain compatibility with GPS data.
+
+From every point in the grid, a 360-degree horizon profile is generated. This is achieved through ray-casting, where the elevation angle of the skyline is calculated at set intervals---typically every 1 degree (360 values), though 0.5 degrees (720 values) remains an option if the memory budget allows. This process involves checking the line of sight for up to 50 kilometers. The result is a numerical fingerprint stored in a searchable index; for the scale of a single region, a simple NumPy array or a lightweight FAISS index will serve as the permanent reference.
+
+The primary goal is to isolate the terrain-sky boundary efficiently. We are starting with a MobileNet-V3-UNet architecture. Since large, hand-labeled datasets for Nepal are rare, the DEM itself will be used to render thousands of synthetic silhouettes for training. These synthetic images will include simulated noise---such as varying sky conditions, clouds, and ground textures---to help the model generalize. If the UNet struggles with boundary fidelity or becomes a bottleneck, a Canny edge-detection heuristic will probably be used.
+
+A major challenge is determining the camera’s compass heading. While identifying the sun’s glare using ephemeris tools like Pysolar is a potential improvement for narrowing the search, it is highly dependent on clear weather and accurate timestamps. Instead, the system will prioritize a sliding window approach, comparing the photo’s horizon against every possible rotation in the database. This ensures the system remains functional even when no astronomical data is available.
+
+A similarity search is used to pull the most likely candidates from the database. We will use a two-step matching process: first, a fast Euclidean or Cosine similarity search to find the top 50--100 candidates, followed by Dynamic Time Warping (DTW) for final ranking. We will prioritize Early Abandoning and Pruning (EAP) to keep compute time linear, ensuring peaks are matched even if they are slightly distorted by lens zoom or atmospheric haze. While the current implementation focuses on the primary visible skyline, this framework establishes a foundation for future development; subsequent iterations could be extended to utilize internal mountain ridge-lines to maintain localization in scenarios where fog or heavy haze occludes the distant global horizon.
+
+Although RANSAC-based optimization to reach sub-grid accuracy is a possibility, it may not be viable within the current timeframe. We will validate the logic using Google Street View photospheres, which provide a ground-truth dataset with verified GPS and heading metadata to test the database.

@@ -1,0 +1,90 @@
+\documentclass[12pt]{thapathaliece}
+
+\input{vars.tex}
+
+% Optional helper packages used by some guideline chapters
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{calc, positioning, fit, patterns, shadows, shapes, shapes.geometric, arrows, arrows.meta}
+
+% Glossary entries (define once, print later)
+\input{src/frontmatter/abbreviations}
+\input{src/frontmatter/symbols}
+
+% Required Packages
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{amsmath, amssymb}
+
+% Color Definitions (used across all three subfiles)
+\definecolor{bglight}{HTML}{F8FAFC}
+\definecolor{borderc}{HTML}{E2E8F0}
+\definecolor{textmain}{HTML}{0F172A}
+\definecolor{textsub}{HTML}{475569}
+\definecolor{chartblue}{HTML}{0284C7}
+\definecolor{queryred}{HTML}{EF4444}
+\definecolor{valleygreen}{RGB}{35,95,25}
+\definecolor{midgreen}{RGB}{95,155,100}
+\definecolor{dirtbrown}{RGB}{185,150,110}
+\definecolor{rockbrown}{RGB}{215,200,185}
+\definecolor{snowwhite}{RGB}{250,250,250}
+\definecolor{customorange}{RGB}{255,130,0}
+
+
+\begin{document}
+% =====================
+% FRONTMATTER
+% =====================
+
+% \input{src/frontmatter/_coverWithSupervisors}
+\input{src/frontmatter/_coverBase}
+
+\clearpage
+\pagenumbering{roman}
+
+% \input{src/frontmatter/certificate}
+% \input{src/frontmatter/declar}
+% \input{src/frontmatter/copyright}
+
+
+
+% Standard frontmatter
+% \input{src/frontmatter/acknow}
+\input{src/frontmatter/abstract}
+\input{src/frontmatter/toc}
+
+% =====================
+% MAINMATTER
+% =====================
+\clearpage
+\pagenumbering{arabic}
+
+\input{src/chapters/intro}
+\input{src/chapters/literatureReview}
+% \input{src/chapters/requirements}
+\input{src/chapters/systemArchitectureAndMethodology}
+\input{src/chapters/expectedOutcomes}
+\input{src/chapters/feasibilityAnalysis}
+% \input{src/chapters/implementationDetails}
+% \input{src/chapters/resultAndAnalysis}
+% \input{src/chapters/remainingTasks}
+% \input{src/chapters/conclusion}
+
+% =====================
+% BACKMATTER / APPENDICES
+% =====================
+\clearpage
+% \appendix
+% \addcontentsline{toc}{chapter}{APPENDICES}
+% \input{src/backmatter/back.tex}
+% \input{src/backmatter/studentGuide.tex}
+
+
+% =====================
+% REFERENCES
+% =====================
+\renewcommand{\bibname}{REFERENCES}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

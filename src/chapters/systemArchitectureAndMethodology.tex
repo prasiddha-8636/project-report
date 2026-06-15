@@ -1,0 +1,49 @@
+\chapter{METHODOLOGY}
+
+\section{Proposed Approach and Tools}
+GNSS signals often fail in deep Himalayan valleys. Visual odometry drifts over long distances. Skyline matching uses stable mountain peaks as fixed landmarks. It works offline without cell service. This method is more reliable than radio-based navigation. 
+
+The system uses the Copernicus 30-meter Digital Elevation Model (DEM). Python is the main language for development. We use the FAISS library for fast vector search. The final deployment target is standard Android portable hardware.
+
+\section{System Design and Mathematical Foundation}
+The system consists of three main parts. First, we build a reference database from the DEM. Second, a neural network finds the skyline in photos. Third, we match the photo skyline to the database.
+
+We represent the horizon as a 1D vector of elevation angles.
+\begin{equation}
+    V = \{h_1, h_2, \dots, h_{1440}\}
+\end{equation}
+Each value represents a $0.25^\circ$ azimuth step. We assume the earth is a sphere for local ray-casting. Atmospheric refraction is modeled as a constant factor.
+
+\begin{figure}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{\input{src/images/page1}}
+    \caption{Workflow for database generation and skyline matching.}
+    \label{fig:design}
+\end{figure}
+
+\section{Algorithms and Data Processing}
+We generate synthetic horizons via ray-casting. Real-world testing uses Google Street View photospheres. These images provide ground-truth GPS data. We resize all input photos to $512 \times 512$ pixels.
+
+We use a two-phase search. Phase 1 uses FFT-based cross-correlation for speed. It finds the top 10 candidate locations. Phase 2 uses Dynamic Time Warping (DTW) for precision.
+\begin{itemize}
+    \item \textbf{Search Complexity:} $O(m \log m)$ for Phase 1.
+    \item \textbf{Optimization:} Sakoe-Chiba bands keep DTW linear.
+    \item \textbf{Robustness:} Canny edge detection acts as a backup for the extraction model.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{\input{src/images/page3}}
+    \caption{Detailed architecture of the matching engine.}
+    \label{fig:matching_engine}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \resizebox{0.85\textwidth}{!}{\input{src/images/page2}}
+    \caption{Pipeline for skyline extraction from photographs.}
+    \label{fig:skyline_extract}
+\end{figure}
+
+
+

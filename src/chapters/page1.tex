@@ -1,0 +1,345 @@
+\documentclass[11pt, tikz, border=10pt]{standalone}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{amsmath}
+\usetikzlibrary{calc, arrows.meta, shadows}
+
+\definecolor{bglight}{HTML}{F8FAFC}
+\definecolor{borderc}{HTML}{E2E8F0}
+\definecolor{textmain}{HTML}{0F172A}
+\definecolor{textsub}{HTML}{475569}
+\definecolor{valleygreen}{RGB}{35,95,25}
+\definecolor{midgreen}{RGB}{95,155,100}
+\definecolor{dirtbrown}{RGB}{185,150,110}
+\definecolor{rockbrown}{RGB}{215,200,185}
+\definecolor{snowwhite}{RGB}{250,250,250}
+\definecolor{queryred}{HTML}{EF4444}
+\definecolor{chartblue}{HTML}{0284C7}
+
+\begin{document} 
+
+\begin{tikzpicture}[
+    line join=round, 
+    line cap=round,
+    declare function={
+        horizonrad1(\t) = 2.13137 - 0.13137*cos(4*(\t - 70));
+        horizonrad2(\t) = 1.80000 - 0.10000*cos(4*(\t - 70));
+        horizonrad3(\t) = 1.50000 - 0.08000*cos(4*(\t - 70));
+        terrain_base(\u,\v) = 
+            0.7*(\u^2 + \v^2)*exp(-0.18*(\u^2 + \v^2))
+            + 2.0*exp(-0.8*(\u+1.6)^2 - 0.8*(\v-1.6)^2)
+            + 2.2*exp(-0.6*(\u-1.6)^2 - 0.6*(\v+1.6)^2)
+            + 1.5*exp(-0.8*(\u+1.6)^2 - 0.8*(\v+1.6)^2)
+            + 1.8*exp(-0.8*(\u-1.6)^2 - 0.8*(\v-1.6)^2)
+            + 0.15*cos(deg(\u*3))*cos(deg(\v*3));
+        % Rotate coordinate system of terrain by 20 degrees
+        terrain(\x,\y) = terrain_base(0.9397*\x - 0.3420*\y, 0.3420*\x + 0.9397*\y);
+        % Mathematical mapping of 1D curve to the height coordinates of the 2D synthetic box
+        plot_y(\t) = -3.0 + 0.71875 * (terrain(horizonrad3(\t)*cos(\t), horizonrad3(\t)*sin(\t)) - 1.0);
+    }
+]
+
+    % ========================================================
+    % 1. TOP ROW: GLOBAL HORIZON
+    % ========================================================
+    \begin{scope}[yshift=14cm]
+        % Column Headers
+        \node[font=\large\sffamily\bfseries, text=textmain, anchor=south] at (5.45, 8.2) {Digital Elevation Model};
+        \node[font=\large\sffamily\bfseries, text=textmain, anchor=south] at (15.2, 8.2) {Expected Skylines};
+        \node[font=\large\sffamily\bfseries, text=textmain, anchor=south] at (25.5, 8.2) {Vector Index};
+        
+        % Rotated Side Label
+        \node[font=\large\sffamily\bfseries, text=textmain, align=center, anchor=south, rotate=90] at (-0.8, 4.5) {Global Horizon\\(Clear Visibility)};
+
+        \begin{axis}[
+            width=10.5cm, height=9cm,
+            at={(0.2cm, 1.0cm)}, anchor=south west,
+            view={-45}{45}, hide axis,
+            colormap={terrain}{
+                color(0cm)=(valleygreen); color(2cm)=(midgreen);
+                color(4cm)=(dirtbrown); color(6cm)=(rockbrown);
+                color(8cm)=(snowwhite);
+            },
+            domain=-3.5:3.5, y domain=-3.5:3.5, samples=28, z buffer=sort,
+            point meta min=0.3, point meta max=3.6,
+        ]
+            \addplot3[only marks, mark=*, mark options={fill=queryred, draw=queryred, line width=0pt}, mark size=1.1pt, domain=45:225, y domain=0:0, samples=160, samples y=1] 
+                ({horizonrad1(x)*cos(x)}, {horizonrad1(x)*sin(x)}, {terrain(horizonrad1(x)*cos(x), horizonrad1(x)*sin(x)) + 0.03});
+
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad1(90)*cos(90)}, {x * horizonrad1(90)*sin(90)}, {1.3 + x * (terrain(horizonrad1(90)*cos(90), horizonrad1(90)*sin(90)) + 0.03 - 1.3)});
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad1(180)*cos(180)}, {x * horizonrad1(180)*sin(180)}, {1.3 + x * (terrain(horizonrad1(180)*cos(180), horizonrad1(180)*sin(180)) + 0.03 - 1.3)});
+
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad1(90)*cos(90)}, {horizonrad1(90)*sin(90)}, {terrain(horizonrad1(90)*cos(90), horizonrad1(90)*sin(90)) + 0.03})};
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad1(180)*cos(180)}, {horizonrad1(180)*sin(180)}, {terrain(horizonrad1(180)*cos(180), horizonrad1(180)*sin(180)) + 0.03})};
+
+            \addplot3[surf, faceted color=black!20, line width=0.3pt] { terrain(x, y) };
+
+            \addplot3[only marks, mark=*, mark options={fill=queryred, draw=queryred, line width=0pt}, mark size=1.1pt, domain=225:405, y domain=0:0, samples=160, samples y=1] 
+                ({horizonrad1(x)*cos(x)}, {horizonrad1(x)*sin(x)}, {terrain(horizonrad1(x)*cos(x), horizonrad1(x)*sin(x)) + 0.03});
+
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad1(0)*cos(0)}, {x * horizonrad1(0)*sin(0)}, {1.3 + x * (terrain(horizonrad1(0)*cos(0), horizonrad1(0)*sin(0)) + 0.03 - 1.3)});
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad1(270)*cos(270)}, {x * horizonrad1(270)*sin(270)}, {1.3 + x * (terrain(horizonrad1(270)*cos(270), horizonrad1(270)*sin(270)) + 0.03 - 1.3)});
+
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad1(0)*cos(0)}, {horizonrad1(0)*sin(0)}, {terrain(horizonrad1(0)*cos(0), horizonrad1(0)*sin(0)) + 0.03})};
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad1(270)*cos(270)}, {horizonrad1(270)*sin(270)}, {terrain(horizonrad1(270)*cos(270), horizonrad1(270)*sin(270)) + 0.03})};
+
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=north, yshift=-2mm] at (axis cs: {horizonrad1(0)*cos(0)}, {horizonrad1(0)*sin(0)}, {terrain(horizonrad1(0)*cos(0), horizonrad1(0)*sin(0)) + 0.03}) {$0^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=south, yshift=2.5mm] at (axis cs: {horizonrad1(90)*cos(90)}, {horizonrad1(90)*sin(90)}, {terrain(horizonrad1(90)*cos(90), horizonrad1(90)*sin(90)) + 0.03}) {$90^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=south, yshift=2.5mm] at (axis cs: {horizonrad1(180)*cos(180)}, {horizonrad1(180)*sin(180)}, {terrain(horizonrad1(180)*cos(180), horizonrad1(180)*sin(180)) + 0.03}) {$180^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=north, yshift=-2mm] at (axis cs: {horizonrad1(270)*cos(270)}, {horizonrad1(270)*sin(270)}, {terrain(horizonrad1(270)*cos(270), horizonrad1(270)*sin(270)) + 0.03}) {$270^\circ$};
+
+            \coordinate (ObserverPos1) at (axis cs:0,0,1.3);
+        \end{axis}
+
+        % Restored Viewpoint Pin
+        \node[anchor=south, inner sep=0, yshift=-0.4mm] at (ObserverPos1) {
+            \begin{tikzpicture}[scale=0.14]
+                \fill[black!15] (0.08,-0.08) circle (0.3);
+                \fill[chartblue, draw=white, line width=1.1pt] (0,0) .. controls (-1.2,1.8) and (-1.8,3.6) .. (0,5.4) .. controls (1.8,3.6) and (1.2,1.8) .. (0,0) -- cycle;
+                \fill[white] (0,3.6) circle (0.6);
+            \end{tikzpicture}
+        };
+
+        \begin{scope}[shift={(11.2,2.2)}]
+            \begin{axis}[
+                width=8cm, height=6.5cm, anchor=south west, axis lines=left, axis line style={textmain, line width=1.5pt},
+                xmin=0, xmax=360, ymin=1.0, ymax=4.2, xtick={0, 90, 180, 270, 360},
+                xticklabels={0$^\circ$, 90$^\circ$, 180$^\circ$, 270$^\circ$, 360$^\circ$}, xticklabel style={font=\scriptsize\sffamily, text=textsub}, ytick=\empty,
+                xlabel={Azimuth Angle ($\theta$)}, ylabel={Maximum Elevation seen from Viewpoint},
+                xlabel style={font=\small\sffamily, text=textmain, yshift=-1mm}, ylabel style={font=\small\sffamily, text=textmain, yshift=2mm},
+            ]
+                \addplot[queryred, line width=2.5pt, domain=0:360, samples=150, smooth] {terrain(horizonrad1(x)*cos(x), horizonrad1(x)*sin(x))};
+            \end{axis}
+        \end{scope}
+        
+        % Vector Symbol [ ... ]
+        \node (vec1) at (20.5, 5.0) [xscale=1.5, yscale=3.5, font=\large] {$\begin{bmatrix} \textcolor{queryred}{\vdots} \end{bmatrix}$};
+    \end{scope}
+
+    % ========================================================
+    % 2. MIDDLE ROW: LOCAL HORIZON
+    % ========================================================
+    \begin{scope}[yshift=7cm]
+        \node[font=\large\sffamily\bfseries, text=textmain, align=center, anchor=south, rotate=90] at (-0.8, 4.5) {Local Horizon\\(Moderate Haze)};
+
+        \begin{axis}[
+            width=10.5cm, height=9cm,
+            at={(0.2cm, 1.0cm)}, anchor=south west,
+            view={-45}{45}, hide axis,
+            colormap={terrain}{
+                color(0cm)=(valleygreen); color(2cm)=(midgreen);
+                color(4cm)=(dirtbrown); color(6cm)=(rockbrown);
+                color(8cm)=(snowwhite);
+            },
+            domain=-3.5:3.5, y domain=-3.5:3.5, samples=28, z buffer=sort,
+            point meta min=0.3, point meta max=3.6,
+        ]
+            \addplot3[only marks, mark=*, mark options={fill=queryred, draw=queryred, line width=0pt}, mark size=1.1pt, domain=45:225, y domain=0:0, samples=160, samples y=1] 
+                ({horizonrad2(x)*cos(x)}, {horizonrad2(x)*sin(x)}, {terrain(horizonrad2(x)*cos(x), horizonrad2(x)*sin(x)) + 0.03});
+
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad2(90)*cos(90)}, {x * horizonrad2(90)*sin(90)}, {1.3 + x * (terrain(horizonrad2(90)*cos(90), horizonrad2(90)*sin(90)) + 0.03 - 1.3)});
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad2(180)*cos(180)}, {x * horizonrad2(180)*sin(180)}, {1.3 + x * (terrain(horizonrad2(180)*cos(180), horizonrad2(180)*sin(180)) + 0.03 - 1.3)});
+
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad2(90)*cos(90)}, {horizonrad2(90)*sin(90)}, {terrain(horizonrad2(90)*cos(90), horizonrad2(90)*sin(90)) + 0.03})};
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad2(180)*cos(180)}, {horizonrad2(180)*sin(180)}, {terrain(horizonrad2(180)*cos(180), horizonrad2(180)*sin(180)) + 0.03})};
+
+            \addplot3[surf, faceted color=black!20, line width=0.3pt] { terrain(x, y) };
+
+            \addplot3[only marks, mark=*, mark options={fill=queryred, draw=queryred, line width=0pt}, mark size=1.1pt, domain=225:405, y domain=0:0, samples=160, samples y=1] 
+                ({horizonrad2(x)*cos(x)}, {horizonrad2(x)*sin(x)}, {terrain(horizonrad2(x)*cos(x), horizonrad2(x)*sin(x)) + 0.03});
+
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad2(0)*cos(0)}, {x * horizonrad2(0)*sin(0)}, {1.3 + x * (terrain(horizonrad2(0)*cos(0), horizonrad2(0)*sin(0)) + 0.03 - 1.3)});
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad2(270)*cos(270)}, {x * horizonrad2(270)*sin(270)}, {1.3 + x * (terrain(horizonrad2(270)*cos(270), horizonrad2(270)*sin(270)) + 0.03 - 1.3)});
+
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad2(0)*cos(0)}, {horizonrad2(0)*sin(0)}, {terrain(horizonrad2(0)*cos(0), horizonrad2(0)*sin(0)) + 0.03})};
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad2(270)*cos(270)}, {horizonrad2(270)*sin(270)}, {terrain(horizonrad2(270)*cos(270), horizonrad2(270)*sin(270)) + 0.03})};
+
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=north, yshift=-2mm] at (axis cs: {horizonrad2(0)*cos(0)}, {horizonrad2(0)*sin(0)}, {terrain(horizonrad2(0)*cos(0), horizonrad2(0)*sin(0)) + 0.03}) {$0^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=south, yshift=2.5mm] at (axis cs: {horizonrad2(90)*cos(90)}, {horizonrad2(90)*sin(90)}, {terrain(horizonrad2(90)*cos(90), horizonrad2(90)*sin(90)) + 0.03}) {$90^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=south, yshift=2.5mm] at (axis cs: {horizonrad2(180)*cos(180)}, {horizonrad2(180)*sin(180)}, {terrain(horizonrad2(180)*cos(180), horizonrad2(180)*sin(180)) + 0.03}) {$180^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=north, yshift=-2mm] at (axis cs: {horizonrad2(270)*cos(270)}, {horizonrad2(270)*sin(270)}, {terrain(horizonrad2(270)*cos(270), horizonrad2(270)*sin(270)) + 0.03}) {$270^\circ$};
+
+            \coordinate (ObserverPos2) at (axis cs:0,0,1.3);
+        \end{axis}
+
+        % Restored Viewpoint Pin
+        \node[anchor=south, inner sep=0, yshift=-0.4mm] at (ObserverPos2) {
+            \begin{tikzpicture}[scale=0.14]
+                \fill[black!15] (0.08,-0.08) circle (0.3);
+                \fill[chartblue, draw=white, line width=1.1pt] (0,0) .. controls (-1.2,1.8) and (-1.8,3.6) .. (0,5.4) .. controls (1.8,3.6) and (1.2,1.8) .. (0,0) -- cycle;
+                \fill[white] (0,3.6) circle (0.6);
+            \end{tikzpicture}
+        };
+
+        \begin{scope}[shift={(11.2,2.2)}]
+            \begin{axis}[
+                width=8cm, height=6.5cm, anchor=south west, axis lines=left, axis line style={textmain, line width=1.5pt},
+                xmin=0, xmax=360, ymin=1.0, ymax=4.2, xtick={0, 90, 180, 270, 360},
+                xticklabels={0$^\circ$, 90$^\circ$, 180$^\circ$, 270$^\circ$, 360$^\circ$}, xticklabel style={font=\scriptsize\sffamily, text=textsub}, ytick=\empty,
+                xlabel={Azimuth Angle ($\theta$)}, ylabel={Maximum Elevation seen from Viewpoint},
+                xlabel style={font=\small\sffamily, text=textmain, yshift=-1mm}, ylabel style={font=\small\sffamily, text=textmain, yshift=2mm},
+            ]
+                \addplot[queryred, line width=2.5pt, domain=0:360, samples=150, smooth] {terrain(horizonrad2(x)*cos(x), horizonrad2(x)*sin(x))};
+            \end{axis}
+        \end{scope}
+        
+        % Vector Symbol [ ... ]
+        \node (vec2) at (20.5, 5.0) [xscale=1.5, yscale=3.5, font=\large] {$\begin{bmatrix} \textcolor{queryred}{\vdots} \end{bmatrix}$};
+    \end{scope}
+
+    % ========================================================
+    % 3. BOTTOM ROW: RESTRICTED HORIZON
+    % ========================================================
+    \begin{scope}[yshift=0cm]
+        \node[font=\large\sffamily\bfseries, text=textmain, align=center, anchor=south, rotate=90] at (-0.8, 4.5) {Restricted Horizon\\(Dense Fog)};
+
+        \begin{axis}[
+            width=10.5cm, height=9cm,
+            at={(0.2cm, 1.0cm)}, anchor=south west,
+            view={-45}{45}, hide axis,
+            colormap={terrain}{
+                color(0cm)=(valleygreen); color(2cm)=(midgreen);
+                color(4cm)=(dirtbrown); color(6cm)=(rockbrown);
+                color(8cm)=(snowwhite);
+            },
+            domain=-3.5:3.5, y domain=-3.5:3.5, samples=28, z buffer=sort,
+            point meta min=0.3, point meta max=3.6,
+        ]
+            \addplot3[only marks, mark=*, mark options={fill=queryred, draw=queryred, line width=0pt}, mark size=1.1pt, domain=45:225, y domain=0:0, samples=160, samples y=1] 
+                ({horizonrad3(x)*cos(x)}, {horizonrad3(x)*sin(x)}, {terrain(horizonrad3(x)*cos(x), horizonrad3(x)*sin(x)) + 0.03});
+
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad3(90)*cos(90)}, {x * horizonrad3(90)*sin(90)}, {1.3 + x * (terrain(horizonrad3(90)*cos(90), horizonrad3(90)*sin(90)) + 0.03 - 1.3)});
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad3(180)*cos(180)}, {x * horizonrad3(180)*sin(180)}, {1.3 + x * (terrain(horizonrad3(180)*cos(180), horizonrad3(180)*sin(180)) + 0.03 - 1.3)});
+
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad3(90)*cos(90)}, {horizonrad3(90)*sin(90)}, {terrain(horizonrad3(90)*cos(90), horizonrad3(90)*sin(90)) + 0.03})};
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad3(180)*cos(180)}, {horizonrad3(180)*sin(180)}, {terrain(horizonrad3(180)*cos(180), horizonrad3(180)*sin(180)) + 0.03})};
+
+            \addplot3[surf, faceted color=black!20, line width=0.3pt] { terrain(x, y) };
+
+            \addplot3[only marks, mark=*, mark options={fill=queryred, draw=queryred, line width=0pt}, mark size=1.1pt, domain=225:405, y domain=0:0, samples=160, samples y=1] 
+                ({horizonrad3(x)*cos(x)}, {horizonrad3(x)*sin(x)}, {terrain(horizonrad3(x)*cos(x), horizonrad3(x)*sin(x)) + 0.03});
+
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad3(0)*cos(0)}, {x * horizonrad3(0)*sin(0)}, {1.3 + x * (terrain(horizonrad3(0)*cos(0), horizonrad3(0)*sin(0)) + 0.03 - 1.3)});
+            \addplot3[only marks, mark=*, mark options={fill=textsub!70, draw=none}, mark size=0.8pt, domain=0:1, samples=9, samples y=1] 
+                ({x * horizonrad3(270)*cos(270)}, {x * horizonrad3(270)*sin(270)}, {1.3 + x * (terrain(horizonrad3(270)*cos(270), horizonrad3(270)*sin(270)) + 0.03 - 1.3)});
+
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad3(0)*cos(0)}, {horizonrad3(0)*sin(0)}, {terrain(horizonrad3(0)*cos(0), horizonrad3(0)*sin(0)) + 0.03})};
+            \addplot3[mark=*, mark options={fill=white, draw=queryred!80, line width=1.2pt}, mark size=3pt] coordinates {({horizonrad3(270)*cos(270)}, {horizonrad3(270)*sin(270)}, {terrain(horizonrad3(270)*cos(270), horizonrad3(270)*sin(270)) + 0.03})};
+
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=north, yshift=-2mm] at (axis cs: {horizonrad3(0)*cos(0)}, {horizonrad3(0)*sin(0)}, {terrain(horizonrad3(0)*cos(0), horizonrad3(0)*sin(0)) + 0.03}) {$0^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=south, yshift=2.5mm] at (axis cs: {horizonrad3(90)*cos(90)}, {horizonrad3(90)*sin(90)}, {terrain(horizonrad3(90)*cos(90), horizonrad3(90)*sin(90)) + 0.03}) {$90^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=south, yshift=2.5mm] at (axis cs: {horizonrad3(180)*cos(180)}, {horizonrad3(180)*sin(180)}, {terrain(horizonrad3(180)*cos(180), horizonrad3(180)*sin(180)) + 0.03}) {$180^\circ$};
+            \node[font=\scriptsize\sffamily\bfseries, text=textsub, anchor=north, yshift=-2mm] at (axis cs: {horizonrad3(270)*cos(270)}, {horizonrad3(270)*sin(270)}, {terrain(horizonrad3(270)*cos(270), horizonrad3(270)*sin(270)) + 0.03}) {$270^\circ$};
+
+            \coordinate (ObserverPos3) at (axis cs:0,0,1.3);
+        \end{axis}
+
+        % Restored Viewpoint Pin
+        \node[anchor=south, inner sep=0, yshift=-0.4mm] at (ObserverPos3) {
+            \begin{tikzpicture}[scale=0.14]
+                \fill[black!15] (0.08,-0.08) circle (0.3);
+                \fill[chartblue, draw=white, line width=1.1pt] (0,0) .. controls (-1.2,1.8) and (-1.8,3.6) .. (0,5.4) .. controls (1.8,3.6) and (1.2,1.8) .. (0,0) -- cycle;
+                \fill[white] (0,3.6) circle (0.6);
+            \end{tikzpicture}
+        };
+
+        \begin{scope}[shift={(11.2,2.2)}]
+            \begin{axis}[
+                width=8cm, height=6.5cm, anchor=south west, axis lines=left, axis line style={textmain, line width=1.5pt},
+                xmin=0, xmax=360, ymin=1.0, ymax=4.2, xtick={0, 90, 180, 270, 360},
+                xticklabels={0$^\circ$, 90$^\circ$, 180$^\circ$, 270$^\circ$, 360$^\circ$}, xticklabel style={font=\scriptsize\sffamily, text=textsub}, ytick=\empty,
+                xlabel={Azimuth Angle ($\theta$)}, ylabel={Maximum Elevation seen from Viewpoint},
+                xlabel style={font=\small\sffamily, text=textmain, yshift=-1mm}, ylabel style={font=\small\sffamily, text=textmain, yshift=2mm},
+            ]
+                \addplot[queryred, line width=2.5pt, domain=0:360, samples=150, smooth] {terrain(horizonrad3(x)*cos(x), horizonrad3(x)*sin(x))};
+            \end{axis}
+        \end{scope}
+        
+        % Vector Symbol [ ... ]
+        \node (vec3) at (20.5, 5.0) [xscale=1.5, yscale=3.5, font=\large] {$\begin{bmatrix} \textcolor{queryred}{\vdots} \end{bmatrix}$};
+
+        % ========================================================
+        % GENERATIVE SYNTHETIC DATA BLOCK (Below 3rd Row 1D Graph)
+        % ========================================================
+        
+        % Sleek slate-gray arrow moved cleanly below the xlabel text to avoid clutter/overlap
+        \draw[textsub, line width=1.8pt, -{Stealth[length=3mm, width=2mm]}] (15.2, 0.0) -- (15.2, -0.6);
+        
+        % Box 3 (deepest background card - only outline visible on bottom/right)
+        \draw[textsub, thick, rounded corners=4pt, fill=white] (11.5, -3.3) rectangle (19.5, -1.0);
+        
+        % Box 2 (middle background card - only outline visible on bottom/right)
+        \draw[textsub, thick, rounded corners=4pt, fill=white] (11.35, -3.15) rectangle (19.35, -0.85);
+
+        % Hidden PGFPlots axis precisely matching 1D graph coordinate space
+        \begin{axis}[
+            width=8cm, height=2.3cm,
+            at={(11.2cm, -3.0cm)}, anchor=south west,
+            xmin=0, xmax=360, ymin=1.0, ymax=4.2,
+            scale only axis, % Forces coordinate viewport to fill the specified box boundaries
+            hide axis
+        ]
+            % Perfect clipping container for the rounded corners
+            \begin{scope}
+                \clip[rounded corners=4pt] (0, 1.0) rectangle (360, 4.2);
+                
+                % High-altitude Himalayan sky background (now completely fills the box area)
+                \shade[top color=chartblue!90!black, bottom color=chartblue!15!white] (0, 1.0) rectangle (360, 4.2);
+                
+                % Snow-capped mountain silhouette matching the red 1D curve 1-to-1 (now completely fills the box area)
+                \shade[top color=snowwhite, bottom color=textmain!85!black, draw=none] 
+                    (0, 1.0) -- plot[domain=0:360, samples=80, smooth] (\x, {terrain(horizonrad3(\x)*cos(\x), horizonrad3(\x)*sin(\x))}) -- (360, 1.0) -- cycle;
+            \end{scope}
+        \end{axis}
+        
+        % Protective border matching the background box (Main Box on top)
+        \draw[textsub, thick, rounded corners=4pt] (11.2, -3.0) rectangle (19.2, -0.7);
+        
+        % Synthetic Data label below the generated stacked frame
+        \node[font=\small\sffamily\bfseries, text=textmain, anchor=north] at (15.35, -3.4) {Simulated Ground-Level Imagery};
+        
+    \end{scope}
+
+    % ========================================================
+    % 4. SHARED CENTRAL GRID & CONNECTIONS
+    % ========================================================
+    \begin{scope}[shift={(23.2, 8.5)}]
+        % Manual Grid (Outer boundary + clean internal divisions)
+        \draw[borderc, thick, fill=white] (0,0) rectangle (4.0,4.0);
+        \draw[borderc, thin, step=0.8cm] (0,0) grid (4.0,4.0);
+        
+        % Highlighted cell (Center area)
+        \fill[queryred!20] (1.6,1.6) rectangle (2.4,2.4);
+
+        \coordinate (cell0) at (1.8, 1.8); % The center cell itself
+        \coordinate (cell1) at (2.0, 2.0); % The center cell itself
+        \coordinate (cell2) at (1.8, 2.2); % The center cell itself
+        \draw[textmain, ultra thick, -{Stealth[length=3mm]}] (vec1.east) to[out=0, in=135] (cell2);
+        \draw[textmain, ultra thick, -{Stealth[length=3mm]}] (vec2.east) to[out=0, in=180] (cell1);
+        \draw[textmain, ultra thick, -{Stealth[length=3mm]}] (vec3.east) to[out=0, in=-135] (cell0);
+
+        
+        % Teardrop Pin added on top of the highlighted grid cell
+        \node[anchor=south, inner sep=0, yshift=0.5mm] at (2.0, 2.0) {
+            \begin{tikzpicture}[scale=0.14]
+                \fill[black!15] (0.08,-0.08) circle (0.3);
+                \fill[chartblue, draw=white, line width=1.1pt] (0,0) .. controls (-1.2,1.8) and (-1.8,3.6) .. (0,5.4) .. controls (1.8,3.6) and (1.2,1.8) .. (0,0) -- cycle;
+                \fill[white] (0,3.6) circle (0.6);
+            \end{tikzpicture}
+        };
+        
+    \end{scope}
+
+\end{tikzpicture}
+\end{document}

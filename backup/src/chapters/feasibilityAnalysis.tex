@@ -1,0 +1,14 @@
+\chapter{FEASIBILITY ANALYSIS}
+
+\section{Technical Feasibility}
+The project’s technical viability is supported by the availability of mature, well-defined software libraries. For processing GLO-30 DEM data and performing coordinate transformations, standard geospatial packages such as Rasterio or GDAL can be utilized. The implementation of the DTW logic and similarity search can leverage optimized libraries like SciPy or Facebook AI Similarity Search (FAISS), which are designed for efficient numerical computation. For the skyline segmentation task, deep learning frameworks such as PyTorch or TensorFlow may be employed to deploy a MobileNet-V3-UNet architecture. By utilizing these existing tools, the development can focus on the specific logic of terrain matching rather than low-level data handling or basic algorithm implementation.
+
+\section{Scope and Database Feasibility}
+To maintain a manageable computational and storage footprint, the system does not attempt to index a large geographic region. Instead, the project can be limited to specific Regions of Interest (ROIs), such as the Khumbu or Annapurna regions of Nepal. The database size may be further controlled through strategic constraints:
+\begin{enumerate}
+    \item \textbf{Grid Sampling:} Viewpoints can be sampled at a coarse interval (e.g., 500m) rather than high-density 30m steps, significantly reducing the total number of entries in the index.
+    \item \textbf{Search Radius:} The ray-casting process for horizon generation can be capped at some radius like 50km. This prevents the inclusion of distant, irrelevant terrain data, keeping the memory requirements within the limits of standard consumer hardware.
+\end{enumerate}
+
+\section{Operational Feasibility}
+By focusing on a limited geographic scope and using a tiered search strategy, the system remains operationally viable. The matching engine might first employ a fast search e.g. Euclidean distance search to prune the database to a small subset of candidates (e.g., the top 50 matches). Only this subset would then be processed using the more computationally intensive DTW algorithm. This tiered approach ensures that localization can be achieved in a reasonable timeframe without requiring high-performance computing clusters, making the project feasible for execution on typical devices.

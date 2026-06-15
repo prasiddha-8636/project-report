@@ -1,0 +1,11 @@
+\standalonepreambles
+\subpreamble{src/images/page1.tex}
+\usepackage {pgfplots}\pgfplotsset {compat=1.18}\usepackage {amsmath}\usetikzlibrary {calc, arrows.meta, shadows}\definecolor {bglight}{HTML}{F8FAFC}\definecolor {borderc}{HTML}{E2E8F0}\definecolor {textmain}{HTML}{0F172A}\definecolor {textsub}{HTML}{475569}\definecolor {valleygreen}{RGB}{35,95,25}\definecolor {midgreen}{RGB}{95,155,100}\definecolor {dirtbrown}{RGB}{185,150,110}\definecolor {rockbrown}{RGB}{215,200,185}\definecolor {snowwhite}{RGB}{250,250,250}\definecolor {queryred}{HTML}{EF4444}\definecolor {chartblue}{HTML}{0284C7}
+\endsubpreamble
+\subpreamble{src/images/page3.tex}
+\usepackage {pgfplots}\pgfplotsset {compat=1.18}\usepackage {amsmath}\usetikzlibrary {calc, arrows.meta, positioning, shapes.geometric, fit, patterns}\definecolor {bglight}{HTML}{F8FAFC}\definecolor {borderc}{HTML}{E2E8F0}\definecolor {textmain}{HTML}{0F172A}\definecolor {textsub}{HTML}{475569}\definecolor {chartblue}{HTML}{0284C7}\definecolor {queryred}{HTML}{EF4444}\definecolor {valleygreen}{RGB}{35,95,25}\definecolor {customorange}{RGB}{255,130,0}
+\endsubpreamble
+\subpreamble{src/images/page2.tex}
+\usepackage {pgfplots}\pgfplotsset {compat=1.18}\usetikzlibrary {calc, arrows.meta, positioning, shapes.geometric, fit}\definecolor {bglight}{HTML}{F8FAFC}\definecolor {borderc}{HTML}{E2E8F0}\definecolor {textmain}{HTML}{0F172A}\definecolor {textsub}{HTML}{475569}\definecolor {chartblue}{HTML}{0284C7}\definecolor {queryred}{HTML}{EF4444}\definecolor {valleygreen}{RGB}{35,95,25}\definecolor {midgreen}{RGB}{95,155,100}\definecolor {dirtbrown}{RGB}{185,150,110}\definecolor {rockbrown}{RGB}{215,200,185}\definecolor {snowwhite}{RGB}{250,250,250}
+\endsubpreamble
+\endstandalonepreambles

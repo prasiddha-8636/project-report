@@ -1,0 +1,39 @@
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{ABSTRACT}{i}{section*.2}%
+\contentsline {chapter}{\numberline {1}LIST OF FIGURES}{iv}{chapter.4}%
+\contentsline {chapter}{LIST OF ABBREVIATIONS}{iv}{chapter.4}%
+\contentsline {chapter}{LIST OF SYMBOLS}{v}{chapter.4}%
+\contentsline {chapter}{\numberline {2}INTRODUCTION}{1}{chapter.5}%
+\contentsline {section}{\numberline {2.1}Background}{1}{section.6}%
+\contentsline {section}{\numberline {2.2}Motivation}{1}{section.7}%
+\contentsline {section}{\numberline {2.3}Problem Statement}{1}{section.8}%
+\contentsline {section}{\numberline {2.4}Objectives}{1}{section.12}%
+\contentsline {section}{\numberline {2.5}Scope and Limitations}{1}{section.13}%
+\contentsline {chapter}{\numberline {3}LITERATURE REVIEW}{3}{chapter.15}%
+\contentsline {section}{\numberline {3.1}Evolution of Terrain Representation}{3}{section.16}%
+\contentsline {section}{\numberline {3.2}Developments in Skyline Segmentation}{3}{section.17}%
+\contentsline {section}{\numberline {3.3}Progress in Silhouette Matching and Heading Resolution}{4}{section.18}%
+\contentsline {section}{\numberline {3.4}Justification for GNSS-Based Validation}{4}{section.19}%
+\contentsline {chapter}{\numberline {4}METHODOLOGY}{6}{chapter.20}%
+\contentsline {section}{\numberline {4.1}Proposed Approach and Tools}{6}{section.21}%
+\contentsline {section}{\numberline {4.2}System Design and Mathematical Foundation}{6}{section.22}%
+\contentsline {section}{\numberline {4.3}Algorithms and Data Processing}{6}{section.25}%
+\contentsline {chapter}{\numberline {5}EXPECTED RESULTS}{9}{chapter.28}%
+\contentsline {chapter}{\numberline {6}FEASIBILITY ANALYSIS}{10}{chapter.29}%
+\contentsline {section}{\numberline {6.1}Overview}{10}{section.30}%
+\contentsline {section}{\numberline {6.2}Elevation Data and Database Generation}{10}{section.31}%
+\contentsline {subsection}{\numberline {6.2.1}Choice of DEM}{10}{subsection.32}%
+\contentsline {subsection}{\numberline {6.2.2}Data Volume and Computational Requirements}{10}{subsection.33}%
+\contentsline {subsection}{\numberline {6.2.3}Database Storage}{11}{subsection.34}%
+\contentsline {section}{\numberline {6.3}Two-Stage Matching Pipeline}{12}{section.35}%
+\contentsline {subsection}{\numberline {6.3.1}Step 1: Fast Search with MASS and FFT}{12}{subsection.36}%
+\contentsline {subsection}{\numberline {6.3.2}Step 2: Fine Check with Dynamic Time Warping}{12}{subsection.37}%
+\contentsline {section}{\numberline {6.4}Horizon Extraction and Validation}{13}{section.40}%
+\contentsline {subsection}{\numberline {6.4.1}Sky Segmentation Model}{13}{subsection.41}%
+\contentsline {subsection}{\numberline {6.4.2}Ground-Truth Verification}{13}{subsection.42}%
+\contentsline {section}{\numberline {6.5}Implementation and Resource Allocation}{14}{section.43}%
+\contentsline {subsection}{\numberline {6.5.1}System Specifications}{14}{subsection.44}%
+\contentsline {subsection}{\numberline {6.5.2}Project Timeline}{14}{subsection.45}%
+\contentsline {section}{\numberline {6.6}Conclusion}{14}{section.46}%
+\contentsline {chapter}{\nonumberline REFERENCES}{15}{chapter*.47}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

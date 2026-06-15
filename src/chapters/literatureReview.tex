@@ -1,0 +1,94 @@
+\chapter{LITERATURE REVIEW}
+
+\section{Evolution of Terrain Representation} Terrain representation has evolved
+significantly over the last three decades. Early systems relied on manual
+surveying and simple topographic maps. These methods lacked the detail needed
+for automated navigation.
+
+In 2000, the Shuttle Radar Topography Mission (SRTM) provided the first
+near-global elevation dataset \cite{Franks2023}. Shortly after, the ASTER Global Digital Elevation
+Model (GDEM) was released in 2009 \cite{Pan2020}. These legacy datasets provided crucial
+elevation grids. However, they exhibited significant errors in high-altitude
+areas \cite{Franks2023}. Steep cliffs and deep valleys caused radar distortions \cite{Pan2020, Franks2023}. These distortions
+led to inaccurate peak heights \cite{Pan2020}.
+
+To address these errors, researchers evaluated newer satellite datasets.
+In 2020, the European Space Agency released the Copernicus GLO-30 model. Recent
+evaluations confirm its superior vertical accuracy \cite{Franks2023}. It
+out-performs older models in steep mountain terrain \cite{Franks2023}. At 30-meter resolution,
+this model captures the unique shape of Himalayan peaks. The resulting database
+is small enough to run on portable devices. This makes it an ideal foundation
+for modern terrain-based positioning systems \cite{Pan2020, Steger2022}.
+
+\section{Developments in Skyline Segmentation} Extracting a clear skyline from a
+photograph is a well-studied problem. Early approaches in the 2000s used classic
+edge-detection filters. These filters detected sudden changes in image
+intensity.
+
+However, traditional edge-detection failed in real-world scenarios. Haze,
+clouds, and shadows often obscured the skyline. This led to broken or incorrect
+boundaries \cite{Pan2020}.
+
+To solve this issue, researchers transitioned to machine learning. In 2015,
+convolutional neural networks revolutionized image segmentation. These deep
+models could identify the sky even in poor lighting conditions.
+
+However, early neural networks were too heavy for mobile phones. In response,
+researchers developed compact architectures. MobileUNET became a popular choice
+for mobile devices. It simplifies calculations to save battery power while
+maintaining high pixel accuracy.
+
+Other modern models adapt object detection frameworks. For example, YUNet adapts
+the YOLOv11 framework for rapid sky detection \cite{Yang2025}. It achieves high
+segmentation scores under difficult weather conditions \cite{Yang2025}.
+
+A persistent challenge was the lack of labeled training images. In 2017, Brejcha
+and Cadik introduced the GeoPose3K dataset \cite{Brejcha2017}. This library
+contains over 3,000 precisely labeled mountain landscapes \cite{Brejcha2017}. In 2022, Tomesek et
+al. explored cross-modal rendering to generate more training data
+\cite{CrossLocate}. These datasets allow modern networks to learn real-world
+features successfully.
+
+\section{Progress in Silhouette Matching and Heading Resolution} Once the
+skyline is extracted, it must be matched against the terrain database. This step
+calculates the camera's location and direction \cite{Pan2020}.
+
+Historically, matching relied on simple pixel-by-pixel comparisons. This method
+was slow and easily confused by different camera lenses. It also required prior
+knowledge of the camera's direction.
+
+To resolve this, researchers implemented a rotational sliding-window search \cite{Pan2020}. The
+system compares the query photo against a 360-degree virtual horizon at multiple
+positions \cite{Pan2020}.
+
+To make this process run in real time, researchers developed two-stage search
+systems. In 2013, Rakthanmanon et al. demonstrated fast subsequence matching
+under Dynamic Time Warping (DTW) \cite{Rakthanmanon2013}. DTW is a robust
+shape-alignment technique. It adjusts for perspective distortions caused by
+different camera lenses \cite{Rakthanmanon2013}.
+
+Running DTW across a large database remains computationally expensive \cite{Rakthanmanon2013}. To solve
+this bottleneck, Mueen et al. introduced a fast search algorithm in 2022
+\cite{Mueen2022}. This algorithm performs rapid pruning by computing simple
+distance profiles \cite{Mueen2022}. It quickly filters out bad candidates. This leaves only a few
+profiles for DTW alignment. This combination enables fast, real-time location
+matching on mobile hardware.
+
+\section{Justification for GNSS-Based Validation} Developing an alternative
+positioning system requires a reliable testing standard. Researchers
+traditionally use high-accuracy GPS data to validate their systems.
+
+Early positioning studies relied on small, custom photo sets. These sets lacked
+diverse lighting conditions and precise coordinates.
+
+This issue was resolved with the release of the Google Street View Trekker
+dataset \cite{Everest_StreetView}. In 2014, researchers captured over 45,000
+high-resolution panoramas along the Everest trail \cite{Everest_StreetView}. The Trekker hardware uses a
+multi-lens camera array. It also integrates precise satellite receivers and
+motion sensors. This hardware ensures highly accurate location tags for every
+image \cite{Everest_StreetView}.
+
+This georeferenced dataset provides an ideal reference map for our project. It
+contains thousands of real-world mountain views with verified coordinates. We
+use this dataset to measure our system's accuracy in the actual Khumbu
+environment.

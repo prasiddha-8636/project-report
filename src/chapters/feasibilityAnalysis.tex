@@ -1,0 +1,137 @@
+\chapter{FEASIBILITY ANALYSIS}
+
+\section{Overview}
+
+The feasibility analysis focuses on data acquisition, computational viability, and empirical validation. The system architecture generates a reference database of synthetic skyline profiles from a digital elevation model. These profiles are matched against query images using a two-stage search pipeline. Validation is performed using a systematic train/test framework on geotagged perspective imagery.
+
+\section{Elevation Data and Database Generation}
+\label{sec:elevation}
+
+\subsection{Choice of DEM}
+
+Digital Elevation Models (DEMs) model the terrain surface as a grid of elevation values. This grid is used to reconstruct the 3D mountain horizons required for matching.
+
+We selected the Copernicus GLO-30 DEM, which offers global coverage at a $30\,\text{m}$ spatial resolution. In rugged alpine regions, GLO-30 has a measured root-mean-square vertical error of approximately $2.34\,\text{m}$ \cite{Franks2023}. Comparative evaluations in high-relief mountain ranges show that GLO-30 provides a more consistent and reliable terrain surface than older alternatives such as AW3D30 \cite{Trevisani2023}. Additionally, GLO-30 has been successfully used in Himalayan glacier studies to track surface elevation changes over time \cite{Guo2023}, confirming its utility in high-altitude environments.
+
+Other standard elevation models were considered but presented limitations for this application:
+\begin{itemize}
+    \item \textbf{SRTM and NASADEM:} Contain data gaps in steep, rugged areas due to radar shadow and layover effects.
+    \item \textbf{FABDEM:} Designed to filter out forest canopy and buildings. Because the high-altitude terrain of the Khumbu region contains negligible vegetation and structural cover, FABDEM offers no practical advantage over GLO-30 \cite{Azmin2024}.
+\end{itemize}
+
+\subsection{Data Volume and Computational Requirements}
+
+The study area encompasses the primary trekking corridors in the Khumbu region. To prevent horizon clipping during ray casting, we include a $50\,\text{km}$ buffer zone around the target area. This defines a total bounding box of approximately $140\,\text{km} \times 140\,\text{km}$. At a $30\,\text{m}$ grid spacing, this region contains approximately 22 million elevation cells, requiring between $50\,\text{MB}$ and $90\,\text{MB}$ of storage. This represents a compact dataset that can be easily downloaded and stored.
+
+The reference database is constructed by casting radial search vectors outward from a spatial grid of $6{,}400$ viewpoints (spaced $500\,\text{m}$ apart in an $80 \times 80$ grid). To ensure sufficient directional resolution, the horizon at each viewpoint is sampled at $0.25^{\circ}$ intervals, yielding 1,440 rays per profile:
+\[
+360^{\circ} / 0.25^{\circ} = 1440 \text{ rays.}
+\]
+
+At a terrain resolution of $30\,\text{m}$, casting rays up to a maximum distance of $50\,\text{km}$ requires approximately $1{,}667$ elevation checks per ray. Consequently, generating a single profile involves:
+\[
+1440 \text{ rays} \times 1667 \text{ steps} \approx 2.4 \times 10^6 \text{ elevation checks.}
+\]
+
+For the entire viewpoint grid, the generation phase requires:
+\[
+6400 \times 2.4 \times 10^6 \approx 15.4 \times 10^9 \text{ elevation checks.}
+\]
+
+Although this is a large number of checks, standard array-based processing allows a modern computer to complete the entire database generation in a few minutes \cite{Steger2022}.
+
+\subsection{Database Storage}
+\label{sec:dem-storage}
+
+Each synthesized skyline profile is stored as a vector of elevation angles. At $0.25^{\circ}$ resolution, a profile consists of $1{,}440$ single-precision floating-point values (4 bytes each):
+\[
+1440 \times 4 \text{ bytes} = 5760 \text{ bytes} \approx 5.6\,\text{KB per profile.}
+\]
+
+To handle changing weather conditions, we store three versions of each profile (representing clear, hazy, and foggy conditions):
+\[
+5.6\,\text{KB} \times 3 \approx 16.9\,\text{KB per viewpoint.}
+\]
+
+The complete database for all $6{,}400$ viewpoints requires:
+\[
+6400 \times 16.9\,\text{KB} \approx 105\,\text{MB.}
+\]
+
+This dataset fits easily within standard system memory. Consequently, a simple, in-memory array search is sufficient for retrieval, eliminating the need for complex external database software.
+
+\section{Two-Stage Matching Pipeline}
+
+The matching pipeline processes query images in two stages: a fast global search followed by a fine-alignment verification.
+
+\subsection{Step 1: Fast Search with MASS and FFT}
+
+The query image provides a partial skyline of length $m$ (for example, $m = 240$ data points, representing a $60^{\circ}$ field of view at $0.25^{\circ}$ resolution). Since the camera's orientation is unknown, the query must be evaluated against all possible angular rotations of the $6{,}400$ reference database profiles of length $N = 1440$.
+
+A brute-force sliding-window comparison across all rotations requires $O(N \times m)$ operations. To accelerate this search, we use the Mueen's Algorithm for Similarity Search (MASS), which utilizes the Fast Fourier Transform (FFT) to compute the distance profile in $O(N \log N)$ time \cite{Mueen2022}. This approach builds upon established methods for rapid pattern matching in sequential data \cite{Keogh2017, ReadyTensor2024}.
+
+For a single reference profile, the computational operations required by each method are:
+\begin{itemize}
+    \item \textbf{Brute-Force Search:}
+    \[
+    N \times m = 1440 \times 240 = 345{,}600 \text{ operations.}
+    \]
+    \item \textbf{MASS (FFT-based):}
+    \[
+    N \log_2 N \approx 1440 \times 10.49 \approx 15{,}106 \text{ operations.}
+    \]
+\end{itemize}
+
+Evaluating all $6{,}400$ reference profiles requires approximately 2.2 billion operations using a brute-force approach, compared to only 97 million operations using MASS. This represents an approximate 23-fold reduction in computational complexity, enabling the first-stage search to complete in under one second on standard hardware.
+
+\subsection{Step 2: Fine Check with Dynamic Time Warping}
+
+The fast-search stage identifies the top 50 to 100 candidate viewpoints. However, camera focal lengths and lens distortions can stretch or compress the captured skyline. To handle these geometric variations, we perform a second-stage verification using Dynamic Time Warping (DTW) \cite{Li2020}. This two-step search architecture is consistent with established terrain-based camera geolocation pipelines \cite{Pan2020}.
+
+Standard DTW has a quadratic complexity of $O(m^2)$. To keep the search fast, we apply two constraints:
+\begin{enumerate}
+    \item \textbf{Sakoe-Chiba Band:} The alignment path is restricted to a narrow diagonal constraint window of width $w$. Setting $w$ to $10\%$ of the query length ($w = 24$) reduces the matching complexity per candidate to $O(m \times w)$.
+    \item \textbf{Early Abandoning and Pruning (EAP):} During evaluation, paths that exceed the current minimum distance threshold are terminated early \cite{Rakthanmanon2013}.
+\end{enumerate}
+
+Using these optimizations, evaluating a single candidate requires:
+\[
+m \times w = 240 \times 24 = 5760 \text{ operations.}
+\]
+
+Evaluating 100 candidates requires $576{,}000$ operations. This computational load is minimal and runs efficiently on modern processors.
+
+\section{Horizon Extraction and Validation}
+
+\subsection{Sky Segmentation Model}
+
+To extract a clean skyline query from a photograph, the system must segment the image into "sky" and "non-sky" regions. We propose a U-Net style architecture with a MobileNet-V3 backbone, which is designed for fast execution on portable hardware \cite{Yu2023}. A standard Canny edge-detection and horizon-extraction algorithm \cite{HorizonUAV} is integrated as a fallback mechanism to ensure reliability if the deep-learning model fails or exceeds latency limits. Other modern horizon-detection models also offer useful benchmarks for comparison \cite{Yang2025}.
+
+We will pre-train the model on the GeoPose3K dataset, which contains over 3,000 mountain images with known camera poses \cite{Brejcha2017}. Because GeoPose3K consists of images from the European Alps, we will fine-tune the model on localized Khumbu terrain images to adapt to the region's distinct atmospheric and geological conditions \cite{CrossLocate}.
+
+\subsection{Ground-Truth Verification}
+
+To evaluate the system under real-world conditions, we use geotagged panoramic imagery from the 2014 Google Street View campaign along the trekking route from Lukla to Everest Base Camp \cite{Everest_StreetView}. This collection contains over 45,000 panoramas with verified geographic coordinates and orientation metadata.
+
+To simulate standard perspective photography, we extract multiple perspective crops from each panorama (for example, generating 12 crops at $30^{\circ}$ intervals, each representing a $60^{\circ}$ horizontal field of view). The validation framework incorporates the following design choices:
+\begin{itemize}
+    \item \textbf{Data Leakage Prevention:} The dataset is partitioned into training and testing sets at the panorama level rather than the crop level. This ensures that overlapping perspective views from the same physical coordinate do not appear in both subsets.
+    \item \textbf{Geometric Distortion Correction:} Perspective crops are re-projected from the equirectangular panorama format into planar perspective views to remove geometric bending.
+    \item \textbf{Meteorological Evaluation:} Test images are categorized by atmospheric visibility (clear, hazy, foggy) to evaluate the system's corresponding multi-weather database profiles.
+\end{itemize}
+
+\section{Implementation and Resource Allocation}
+
+\subsection{System Specifications}
+
+Because the reference database has a compact memory footprint of approximately $105\,\text{MB}$, we bypass complex vector indexing libraries (such as FAISS). Instead, we use a direct in-memory array search, which simplifies deployment and avoids external software dependencies.
+
+Given the $500\,\text{m}$ grid spacing of the reference viewpoints, geolocation accuracy is evaluated based on correct grid cell assignment. Directional accuracy is defined relative to the angular resolution step size, targeting heading estimates within $\pm 0.25^{\circ}$.
+
+\subsection{Project Timeline}
+
+The processing steps---including DEM extraction, database generation, and matching---are computationally efficient and fit comfortably within a standard 60-day schedule. The primary resource allocation is directed toward downloading and pre-processing the Street View validation dataset, fine-tuning the segmentation model, and executing the matching evaluation. To prevent API rate-limiting issues, a representative subset of several hundred high-resolution panoramas will be processed, yielding a validation database of several thousand test images.
+
+\section{Conclusion}
+
+The computational, storage, and data requirements of the proposed system are manageable.

@@ -1,0 +1,21 @@
+\chapter{INTRODUCTION}
+
+\section{Background and Motivation}
+In high-altitude regions such as the Nepal Himalayas, satellite-based navigation often encounters challenges due to signal multipath errors and occlusion caused by steep topographic relief \cite{liu2026enhancing, durgam2024cross}. Conventional visual localization services frequently have limited coverage in these remote environments because they rely on ground-level imagery databases that are predominantly urban-centric \cite{baatz2012large, chen2015camera}. However, prominent mountain silhouettes can provide a stable, long-range topographic reference that remains temporally consistent across seasonal changes \cite{norinder2025panoramic, rourera2022skyline}. Terrain-based localization attempts to leverage these silhouettes by comparing features extracted from user-captured photographs against synthetic horizon data derived from DEMs \cite{baatz2012large, tzeng2013user}. This project is motivated by the potential for a robust localization approach that can function in regions where standard GNSS signals are unreliable.
+
+\section{Problem Definition}
+The primary objective is to estimate geographic coordinates and orientation based on the visible skyline. This involves several key challenges:
+\begin{enumerate}
+    \item \textbf{Feature Extraction:} Isolating the terrain-sky boundary in photographs under varying atmospheric and lighting conditions.
+    \item \textbf{Data Representation:} Organizing synthetic horizon data in a format suitable for efficient storage and retrieval across target areas.
+    \item \textbf{Search and Retrieval:} Developing a matching logic capable of identifying the most likely candidates from a reference index, even when camera orientation is unknown.
+\end{enumerate}
+
+\section{Objectives}
+\begin{itemize}
+    \item To develop a pipeline for generating synthetic horizon data from DEM sources and deploy a computer vision architecture for robust skyline segmentation.
+    \item To implement a matching strategy that utilizes similarity metrics for localization and evaluate the system using georeferenced imagery within selected high-relief regions.
+\end{itemize}
+
+\section{Scope}
+The project focuses on terrain-based localization in mountainous areas of Nepal. The system is intended to process static images where a portion of the horizon is visible. The scope is limited to the primary skyline boundary and does not currently focus on internal ridge-lines or scenarios where the skyline is entirely occluded by weather or local obstacles. The project aims to demonstrate feasibility within specified test sites rather than providing a global or nationwide deployment.
