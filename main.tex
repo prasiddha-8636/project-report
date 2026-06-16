@@ -1,4 +1,19 @@
+% 1. FORCE AUTOMATIC GLOSSARY COMPILATION (Safe option passed before class loading)
+\PassOptionsToPackage{automake}{glossaries}
+
 \documentclass[12pt]{thapathaliece}
+
+% 2. FAIL-SAFE AUTHOR DEFINITIONS
+% This prevents "! LaTeX Error: Command \cSubmittedI undefined" in case your
+% compiler is resolving an older/cached version of the class file.
+\providecommand{\cSubmittedI}{}
+\providecommand{\cSubmittedII}{}
+\providecommand{\cSubmittedIII}{}
+\providecommand{\cSubmittedIV}{}
+\providecommand{\cSubmittedIRoll}{}
+\providecommand{\cSubmittedIIRoll}{}
+\providecommand{\cSubmittedIIIRoll}{}
+\providecommand{\cSubmittedIVRoll}{}
 
 \input{vars.tex}
 
@@ -16,7 +31,7 @@
 \pgfplotsset{compat=1.18}
 \usepackage{amsmath, amssymb}
 
-% Color Definitions (used across all three subfiles)
+% Color Definitions
 \definecolor{bglight}{HTML}{F8FAFC}
 \definecolor{borderc}{HTML}{E2E8F0}
 \definecolor{textmain}{HTML}{0F172A}
@@ -30,34 +45,20 @@
 \definecolor{snowwhite}{RGB}{250,250,250}
 \definecolor{customorange}{RGB}{255,130,0}
 
-
 \begin{document}
-% =====================
-% FRONTMATTER
-% =====================
 
-% \input{src/frontmatter/_coverWithSupervisors}
 \input{src/frontmatter/_coverBase}
 
-\clearpage
 \pagenumbering{roman}
-
-% \input{src/frontmatter/certificate}
-% \input{src/frontmatter/declar}
-% \input{src/frontmatter/copyright}
-
-
-
-% Standard frontmatter
-% \input{src/frontmatter/acknow}
 \input{src/frontmatter/abstract}
 \input{src/frontmatter/toc}
+\input{src/frontmatter/lof}
+\glsaddall
+\input{src/frontmatter/list_abbr.tex}
 
-% =====================
-% MAINMATTER
-% =====================
 \clearpage
 \pagenumbering{arabic}
+\setcounter{page}{1}
 
 \input{src/chapters/intro}
 \input{src/chapters/literatureReview}
@@ -69,16 +70,6 @@
 % \input{src/chapters/resultAndAnalysis}
 % \input{src/chapters/remainingTasks}
 % \input{src/chapters/conclusion}
-
-% =====================
-% BACKMATTER / APPENDICES
-% =====================
-\clearpage
-% \appendix
-% \addcontentsline{toc}{chapter}{APPENDICES}
-% \input{src/backmatter/back.tex}
-% \input{src/backmatter/studentGuide.tex}
-
 
 % =====================
 % REFERENCES

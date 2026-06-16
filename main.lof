@@ -1,0 +1,7 @@
+\babel@toc {english}{}\relax 
+\contentsline {figure}{\numberline {1-1}{\ignorespaces Region of Interest (ROI)}}{2}{figure.caption.7}%
+\contentsline {figure}{\numberline {3-1}{\ignorespaces Raycasting to find the expected horizons at a given viewpoint using progressive search radii.}}{7}{figure.caption.9}%
+\contentsline {figure}{\numberline {3-2}{\ignorespaces Pipeline for skyline extraction from photographs.}}{8}{figure.caption.10}%
+\contentsline {figure}{\numberline {3-3}{\ignorespaces Detailed architecture of the matching engine.}}{10}{figure.caption.11}%
+\contentsline {figure}{\numberline {4-1}{\ignorespaces Expected output interface showing the input photograph, predicted location on a map, profile alignment, and ranked candidate list.}}{11}{figure.caption.12}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

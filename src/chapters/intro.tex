@@ -1,35 +1,32 @@
 \chapter{INTRODUCTION}
 
 \section{Background}
-Geographic positioning in the Himalayas is often unreliable due to GNSS signal blockage in deep valleys. However, the mountain skyline provides a stable geometric reference for navigation \cite{Pan2020}. A camera-based system can determine location by matching photo skylines against a database of horizons generated from Digital Elevation Models (DEMs) \cite{Steger2022, Pan2020}.
+Satellite navigation signals weaken or vanish in deep Himalayan valleys due to topographic shielding and multi-path interference \cite{pan2020camera, Steger2022}. Canyon walls, steep ridges, and dense cloud cover block the line of sight to GNSS satellites, leaving trekkers and rescue teams without reliable coordinates. The mountain skyline, however, is always visible from any open viewpoint and its shape is tied directly to the observer's position \cite{pan2020camera}. If a system can extract that shape from a photograph and match it against a known database of terrain profiles, it can determine where the photo was taken---without any satellite signal \cite{Steger2022, pan2020camera}. Researchers proved this approach in European mountain ranges \cite{baatz2012large, saurer2016image} and hilly terrain in China \cite{pan2020camera}.
 
 \section{Motivation}
-In high-altitude regions like Khumbu, navigation failure can be life-threatening. Since portable devices are common, using their cameras for offline positioning provides a robust backup to satellite systems. This technology is essential for trekkers and search-and-rescue teams operating in areas with poor signal reception or GNSS denial.
-
+Navigation failure in the Khumbu region can be fatal. Trekkers routinely carry smartphones with cameras, and these cameras can serve as positioning sensors if the right software is available. An offline skyline-matching system would give users a backup that works even in GNSS-denied areas, independent of cell towers or internet connectivity.
 
 \section{Problem Statement}
-The objective is to estimate a camera's location and orientation using only the visible mountain skyline. The system must address several real-world challenges:
-\begin{enumerate} 
-\item \textbf{Extraction:} Haze, clouds, and low contrast frequently obscure the skyline boundary in real-world photographs \cite{Yang2025}. 
-\item \textbf{Search Scale:} Matching a partial skyline against a massive 360-degree database is computationally expensive without prior orientation data \cite{Pan2020}. 
-\item \textbf{Data Scarcity:} Annotated mountain photographs are scarce for the Himalayas, requiring the use of synthetic terrain views for training extraction models \cite{Brejcha2017}. 
+The goal is to estimate a camera's geographic coordinates and viewing direction from a single mountain photograph. Three practical challenges make this difficult:
+\begin{enumerate}
+\item \textbf{Extraction:} Haze, clouds, and low contrast frequently obscure the skyline boundary \cite{Yang2025}.
+\item \textbf{Search scale:} Without knowing which direction the camera is pointing, the system must search across all possible orientations for every candidate location in the database \cite{pan2020camera}.
+\item \textbf{Data scarcity:} Annotated mountain photographs are rare for the Himalayas, so synthetic training images must supplement real data \cite{Brejcha2017}.
 \end{enumerate}
 
 \section{Objectives}
-The core objectives are: 
 \begin{itemize}
-\item To generate a 360-degree horizon database from high-resolution elevation models.
-\item To implement a matching pipeline using Euclidean distance and Dynamic Time Warping (DTW) to resolve geographic coordinates from photos.
+\item Generate a 360-degree horizon database from the Copernicus GLO-30 Digital Elevation Model.
+\item Build a matching pipeline that combines Euclidean distance search with Dynamic Time Warping (DTW) to resolve coordinates from photographs.
 \end{itemize}
 
-
 \section{Scope and Limitations}
-The study focuses on a $36.4\text{ km} \times 31.2\text{ km}$ area in the Khumbu region of Nepal. 
-\begin{itemize} 
-\item \textbf{Northwest (NW):} $86.600^{\circ}\text{E}$, $28.050^{\circ}\text{N}$ 
-\item \textbf{Northeast (NE):} $86.970^{\circ}\text{E}$, $28.050^{\circ}\text{N}$ 
-\item \textbf{Southwest (SW):} $86.600^{\circ}\text{E}$, $27.770^{\circ}\text{N}$ 
-\item \textbf{Southeast (SE):} $86.970^{\circ}\text{E}$, $27.770^{\circ}\text{N}$
+The study area covers a $40\text{ km} \times 30\text{ km}$ region in the Khumbu valley of Nepal, bounded by:
+\begin{itemize}
+\item \textbf{Northwest (NW):} $86.582^{\circ}\text{E}$, $28.041^{\circ}\text{N}$
+\item \textbf{Northeast (NE):} $86.989^{\circ}\text{E}$, $28.041^{\circ}\text{N}$
+\item \textbf{Southwest (SW):} $86.582^{\circ}\text{E}$, $27.770^{\circ}\text{N}$
+\item \textbf{Southeast (SE):} $86.989^{\circ}\text{E}$, $27.770^{\circ}\text{N}$
 \end{itemize}
 
 \begin{figure}[h]
@@ -39,6 +36,4 @@ The study focuses on a $36.4\text{ km} \times 31.2\text{ km}$ area in the Khumbu
     \label{fig:roi}
 \end{figure}
 
-The system is designed for offline use on standard portable hardware. Limitations include a focus on primary skylines and failures in cases where weather or obstacles completely block the view.
-
-
+The system is designed for offline use on standard portable hardware. It will not work when weather or obstacles completely block the skyline from view.

@@ -82,24 +82,23 @@
     
     % Synthetic Data Pipeline (Horizon -> Rendering)
     \begin{scope}[local bounding box=synthdata]
-        % Expected Horizon Skylines (Calculated First)
-        \node[datastyle] (synthhorizon) at (0, 3.5) {Calculated\\Horizon Skylines};
-        \begin{scope}[shift={($(synthhorizon.south) + (-1.2,-1.3)$)}]
-            \draw[borderc, thick, fill=white] (0,0) rectangle (2.4, 1.0);
-            \draw[queryred, line width=1.5pt] plot[domain=0:2.4, samples=40] (\x, {0.3 + 0.20*sin(\x*360 + 40)});
-        \end{scope}
-
-        % Synthetic Panoramic Renderings (Generated from calculated skyline)
-        \node[datastyle] (synthrender) at (3.8, 3.5) {Synthetic\\Renderings};
-        \begin{scope}[shift={($(synthrender.south) + (-1.2,-1.3)$)}]
+        % Synthetic Renderings (Input to U-Net)
+        \node[datastyle] (synthrender_img) at (0, 3.5) {Synthetic\\Rendering};
+        \begin{scope}[shift={($(synthrender_img.south) + (-1.2,-1.3)$)}]
             \draw[borderc, thick, fill=white] (0,0) rectangle (2.4, 1.0);
             \shade[top color=chartblue!80!black, bottom color=chartblue!15!white] (0,0) rectangle (2.4, 1.0);
-            % Styled curve to match Calculated Horizon Skyline mathematically
             \shade[top color=snowwhite, bottom color=textmain!80!black, draw=none] 
                 (0,0) -- plot[domain=0:2.4, samples=40] (\x, {0.3 + 0.20*sin(\x*360 + 40)}) -- (2.4,0) -- cycle;
         \end{scope}
 
-        \draw[arrowstyle, thin, ->] (synthhorizon) -- (synthrender);
+        % Synthetic Training Masks (Ground Truth for U-Net)
+        \node[datastyle] (synthrender_mask) at (3.8, 3.5) {Synthetic\\Binary Mask};
+        \begin{scope}[shift={($(synthrender_mask.south) + (-1.2,-1.3)$)}]
+            \draw[borderc, thick, fill=textmain] (0,0) rectangle (2.4, 1.0);
+            \fill[white] (0, 1.0) -- plot[domain=0:2.4, samples=40] (\x, {0.3 + 0.20*sin(\x*360 + 40)}) -- (2.4,1.0) -- cycle;
+        \end{scope}
+
+        \draw[arrowstyle, thin, <->] (synthrender_img) -- (synthrender_mask);
     \end{scope}
 
     % Group boxes

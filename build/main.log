@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.5.31)  15 JUN 2026 16:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.5.31)  16 JUN 2026 09:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1051,6 +1051,7 @@ Package: mfirstuc 2025/04/03 v2.09 (NLCT)
 (/usr/share/texmf-dist/tex/latex/xfor/xfor.sty
 Package: xfor 2009/02/05 v1.05 (NLCT)
 )
+(|kpsewhich --var-value=TEXMF_OUTPUT_DIRECTORY)
 (/usr/share/texmf-dist/tex/latex/datatool/datatool-base.sty
 Package: datatool-base 2025/12/04 v3.4.3 (NLCT)
 \l__datatool_tmpa_int=\count381
@@ -1178,15 +1179,21 @@ Package: glossary-tree 2025/11/09 v4.9 (NLCT)
 \l__glossaries_tree_level_int=\count414
 \glstreeindent=\skip101
 ))
+runsystem(makeindex -s "build"/main.ist -t "build"/main.alg -o "build"/main.acr
+ "build"/main.acn)...quotation error in system command.
+
+runsystem(makeindex -s "build"/main.ist -t "build"/main.slg -o "build"/main.sls
+ "build"/main.slo)...quotation error in system command.
+
 \glswrite=\write5
 \glo@acronym@file=\write6
 \openout6 = `main.acn'.
 
-Package glossaries Info: Writing glossary file main.acn on input line 159.
+Package glossaries Info: Writing glossary file main.acn on input line 158.
 \glo@symbols@file=\write7
 \openout7 = `main.slo'.
 
-Package glossaries Info: Writing glossary file main.slo on input line 159.
+Package glossaries Info: Writing glossary file main.slo on input line 158.
 
 (/usr/share/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip18
@@ -1238,7 +1245,6 @@ File: puenc.def 2026-01-29 v7.01p Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
-Package hyperref Info: Option `hypertexnames' set `false' on input line 4072.
 Package hyperref Info: Hyper figures OFF on input line 4201.
 Package hyperref Info: Link nesting OFF on input line 4206.
 Package hyperref Info: Hyper index ON on input line 4209.
@@ -1289,10 +1295,10 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip102
 )
-Package hyperref Info: Option `colorlinks' set `false' on input line 204.
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 204.
+Package hyperref Info: Option `colorlinks' set `false' on input line 203.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 203.
 
-Package hyperref Info: Option `breaklinks' set `true' on input line 204.
+Package hyperref Info: Option `breaklinks' set `true' on input line 203.
 
 (/usr/share/texmf-dist/tex/latex/cleveref/cleveref.sty
 Package: cleveref 2018/03/27 v0.21.4 Intelligent cross-referencing
@@ -1787,7 +1793,7 @@ Class scrreprt Info: loading recommended package `bookmark'.
 (scrreprt)           `bookmarkpackage=false' before \begin{document} and
 (scrreprt)           you can avoid this message adding:
 (scrreprt)             \usepackage{bookmark}
-(scrreprt)           before \begin{document} on input line 34.
+(scrreprt)           before \begin{document} on input line 48.
  (/usr/share/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
@@ -1796,7 +1802,7 @@ File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO
 )
 \BKM@id=\count457
 ))
-LaTeX Font Info:    Trying to load font information for T1+ptm on input line 34
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 48
 .
 
 (/usr/share/texmf-dist/tex/latex/psnfss/t1ptm.fd
@@ -1804,75 +1810,75 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (build/main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 34.
+LaTeX Font Info:    Checking defaults for OML/ntxmi/m/it on input line 48.
 LaTeX Font Info:    Trying to load font information for OML+ntxmi on input line
- 34.
+ 48.
 
 (/usr/share/texmf-dist/tex/latex/newtx/omlntxmi.fd
 File: omlntxmi.fd 2015/08/25 Fontinst v1.933 font definitions for OML/ntxmi.
 )
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for U/ntxexa/m/n on input line 48.
 LaTeX Font Info:    Trying to load font information for U+ntxexa on input line 
-34.
+48.
 
 (/usr/share/texmf-dist/tex/latex/newtx/untxexa.fd
 File: untxexa.fd 2012/04/16 Fontinst v1.933 font definitions for U/ntxexa.
 )
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for LMS/ntxsy/m/n on input line 48.
 LaTeX Font Info:    Trying to load font information for LMS+ntxsy on input line
- 34.
+ 48.
 
 (/usr/share/texmf-dist/tex/latex/newtx/lmsntxsy.fd
 File: lmsntxsy.fd 2016/07/02 Fontinst v1.933 font definitions for LMS/ntxsy.
 )
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 34.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for LMX/ntxexx/m/n on input line 48.
 LaTeX Font Info:    Trying to load font information for LMX+ntxexx on input lin
-e 34.
+e 48.
 
 (/usr/share/texmf-dist/tex/latex/newtx/lmxntxexx.fd
 File: lmxntxexx.fd 2016/07/03 Fontinst v1.933 font definitions for LMX/ntxexx.
 )
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 34.
-LaTeX Font Info:    ... okay on input line 34.
-Package scrbase Info: activating english \abstractname on input line 34.
-Package scrbase Info: activating english \partname on input line 34.
-Package scrbase Info: activating english \chaptername on input line 34.
-Package scrbase Info: activating english \appendixname on input line 34.
-Package scrbase Info: activating english \figurename on input line 34.
-Package scrbase Info: activating english \tablename on input line 34.
-Package scrbase Info: activating english \contentsname on input line 34.
-Package scrbase Info: activating english \listfigurename on input line 34.
-Package scrbase Info: activating english \listtablename on input line 34.
-Package scrbase Info: activating english \bibname on input line 34.
-Package scrbase Info: activating english \indexname on input line 34.
-LaTeX Info: Command `\dddot' is already robust on input line 34.
-LaTeX Info: Command `\ddddot' is already robust on input line 34.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 48.
+LaTeX Font Info:    ... okay on input line 48.
+Package scrbase Info: activating english \abstractname on input line 48.
+Package scrbase Info: activating english \partname on input line 48.
+Package scrbase Info: activating english \chaptername on input line 48.
+Package scrbase Info: activating english \appendixname on input line 48.
+Package scrbase Info: activating english \figurename on input line 48.
+Package scrbase Info: activating english \tablename on input line 48.
+Package scrbase Info: activating english \contentsname on input line 48.
+Package scrbase Info: activating english \listfigurename on input line 48.
+Package scrbase Info: activating english \listtablename on input line 48.
+Package scrbase Info: activating english \bibname on input line 48.
+Package scrbase Info: activating english \indexname on input line 48.
+LaTeX Info: Command `\dddot' is already robust on input line 48.
+LaTeX Info: Command `\ddddot' is already robust on input line 48.
 Package microtype Info: Patching varwidth to enable character protrusion.
 \MT@vwid@leftmargin=\dimen393
 \MT@vwid@rightmargin=\dimen394
-LaTeX Info: Redefining \microtypecontext on input line 34.
-Package microtype Info: Applying patch `item' on input line 34.
-Package microtype Info: Applying patch `toc' on input line 34.
-Package microtype Info: Applying patch `eqnum' on input line 34.
-Package microtype Info: Applying patch `footnote' on input line 34.
-Package microtype Info: Applying patch `verbatim' on input line 34.
-LaTeX Info: Redefining \microtypesetup on input line 34.
+LaTeX Info: Redefining \microtypecontext on input line 48.
+Package microtype Info: Applying patch `item' on input line 48.
+Package microtype Info: Applying patch `toc' on input line 48.
+Package microtype Info: Applying patch `eqnum' on input line 48.
+Package microtype Info: Applying patch `footnote' on input line 48.
+Package microtype Info: Applying patch `verbatim' on input line 48.
+LaTeX Info: Redefining \microtypesetup on input line 48.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -1956,7 +1962,7 @@ Package caption Info: rotating package is loaded.
 Package caption Info: supertabular package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count464
-Package tocbasic Info: setting babel extension for `lol' on input line 34.
+Package tocbasic Info: setting babel extension for `lol' on input line 48.
 \scr@dte@lstlisting@maxnumwidth=\skip103
 
 (/usr/share/texmf-dist/tex/latex/translations/translations-basic-dictionary-eng
@@ -1965,7 +1971,7 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 34.
+or `english'. on input line 48.
  (/usr/share/texmf-dist/tex/latex/pdflscape/pdflscape.sty
 Package: pdflscape 2025-06-23 v0.14 Display of landscape pages in PDF
 
@@ -1977,7 +1983,7 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 (build/main.sta)
 \openout4 = `main.sta'.
 
-Package hyperref Info: Link coloring OFF on input line 34.
+Package hyperref Info: Link coloring OFF on input line 48.
 
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
@@ -2137,55 +2143,63 @@ Package microtype Info: Loading generic protrusion settings for font family
 ) (./src/frontmatter/toc.tex
 [1
 
-
 ]
-Package tocbasic Info: character protrusion at toc deactivated on input line 9.
+Package tocbasic Info: character protrusion at toc deactivated on input line 2.
 
- (build/main.toc [2
-
-])
+ (build/main.toc)
 \tf@toc=\write9
 \openout9 = `main.toc'.
 
- [3]
-chapter 1.
-Package tocbasic Info: character protrusion at lof deactivated on input line 10
-.
-(build/main.lof)
+) (./src/frontmatter/lof.tex [2
+
+]
+Package tocbasic Info: character protrusion at lof deactivated on input line 2.
+
+ (build/main.lof)
 \tf@lof=\write10
 \openout10 = `main.lof'.
 
+)
+(./src/frontmatter/list_abbr.tex [3
 
-No file main.acr.
-[4
+] (./main.acr)) [4
+
+
 
 ]
-No file main.sls.
-[5
-
-]) (./src/chapters/intro.tex
-chapter 2.
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
-1.
+(./src/chapters/intro.tex
+chapter 1.
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
+9.
 (/usr/share/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-) [1
+)
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.26 \item \textbf
+                  {Northwest (NW):} $86.582^{\circ}\text{E}$, $28.041^{\circ...
+[1
 
 
-
-{/usr/share/texmf-dist/fonts/enc/dvips/newtx/ntx-ot1-tlf.enc}]
-<src/images/roi.png, id=165, 906.38625pt x 821.0675pt>
+]
+<src/images/roi.png, id=158, 1111.15125pt x 832.10875pt>
 File: src/images/roi.png Graphic file (type png)
 <use src/images/roi.png>
-Package pdftex.def Info: src/images/roi.png  used on input line 37.
-(pdftex.def)             Requested size: 333.46758pt x 302.07382pt.
-) (./src/chapters/literatureReview.tex
-[2 <./src/images/roi.png>]
-chapter 3.
+Package pdftex.def Info: src/images/roi.png  used on input line 34.
+(pdftex.def)             Requested size: 333.46758pt x 249.72342pt.
+) (./src/chapters/literatureReview.tex [2{/usr/share/texmf-dist/fonts/enc/dvips
+/newtx/ntx-ot1-tlf.enc} <./src/images/roi.png>]
+chapter 2.
 [3
 
-]) (./src/chapters/systemArchitectureAndMethodology.tex [4] [5]
-chapter 4.
+]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+) (./src/chapters/systemArchitectureAndMethodology.tex [4] [5]
+chapter 3.
 (./src/images/page1.tex
 LaTeX Font Info:    Font shape `OT1/minntx/m/n' will be
 (Font)              scaled to size 8.0pt on input line 96.
@@ -2315,7 +2329,10 @@ LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 10.5pt on input line 120.
 LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
 (Font)              scaled to size 7.9pt on input line 120.
-) (./src/images/page3.tex
+) (./src/images/page2.tex) [6
+
+] [7]
+(./src/images/page3.tex
 LaTeX Font Info:    Font shape `OT1/minntx/m/n' will be
 (Font)              scaled to size 17.28pt on input line 162.
 LaTeX Font Info:    Font shape `OT1/minntx/m/n' will be
@@ -2376,40 +2393,59 @@ LaTeX Font Info:    Font shape `OT1/minntx/b/n' will be
 (Font)              scaled to size 6.0pt on input line 341.
 LaTeX Font Info:    Font shape `OT1/minntx/b/n' will be
 (Font)              scaled to size 5.5pt on input line 341.
-) (./src/images/page2.tex))
-(./src/chapters/expectedOutcomes.tex [6
+)) (./src/chapters/expectedOutcomes.tex [8] [9]
+chapter 4.
+(./src/images/page4.tex
+<gsv_photo.png, id=290, 734.745pt x 486.81876pt>
+File: gsv_photo.png Graphic file (type png)
+<use gsv_photo.png>
+Package pdftex.def Info: gsv_photo.png  used on input line 40.
+(pdftex.def)             Requested size: 180.35603pt x 119.4982pt.
+<output_gsv_map.png, id=291, 603.25375pt x 473.77pt>
+File: output_gsv_map.png Graphic file (type png)
+<use output_gsv_map.png>
+Package pdftex.def Info: output_gsv_map.png  used on input line 53.
+(pdftex.def)             Requested size: 152.15698pt x 119.49767pt.
+LaTeX Font Info:    Font shape `OT1/minntx/m/n' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `OML/ntxmi/m/it' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `LMS/ntxsy/m/n' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `LMX/ntxexx/m/n' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `OT1/minntx/b/n' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `U/ntxmia/m/it' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `U/ntxsym/m/n' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `U/ntxsyc/m/n' will be
+(Font)              scaled to size 6.5pt on input line 151.
+LaTeX Font Info:    Font shape `U/ntxexa/m/n' will be
+(Font)              scaled to size 6.5pt on input line 151.
+)) (./src/chapters/feasibilityAnalysis.tex [10
 
-] [7] [8]
+ <./gsv_photo.png> <./output_gsv_map.png>]
 chapter 5.
-) (./src/chapters/feasibilityAnalysis.tex [9
+[11
 
-]
-chapter 6.
-[10
-
-] [11] [12] [13]) [14] (build/main.bbl
+] [12] [13] [14]) (build/main.bbl [15]
 chapter without number
-[15
+[16
 
-
-]
-Overfull \hbox (1.43283pt too wide) in paragraph at lines 95--99
-\T1/ptm/m/n/12 (-20) distance-[]pro^^\le-[]for-[]timestep-[]classi^^\cation-[]i
-n-[]time-[]series-[]analysis-[]ljGAbBceZbpv$[],
- []
-
-) [16] (build/main.aux)
+]) [17] (build/main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2020/03/25>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 73369 strings out of 469515
- 1690125 string characters out of 5470807
- 3725726 words of memory out of 5000000
- 100569 multiletter control sequences out of 15000+600000
- 772943 words of font info for 427 fonts, out of 8000000 for 9000
+ 73513 strings out of 469515
+ 1693065 string characters out of 5470807
+ 3710590 words of memory out of 5000000
+ 100664 multiletter control sequences out of 15000+600000
+ 780534 words of font info for 453 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  122i,20n,131p,11208b,5783s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/newtx/NewTXMI.pfb></usr/share/texmf
@@ -2422,10 +2458,10 @@ fb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texmf-di
 st/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts/type1/urw/tim
 es/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8a.pfb></usr/sh
 are/texmf-dist/fonts/type1/public/newtx/ztmr.pfb>
-Output written on build/main.pdf (22 pages, 2128166 bytes).
+Output written on build/main.pdf (22 pages, 3816648 bytes).
 PDF statistics:
- 513 PDF objects out of 1000 (max. 8388607)
- 432 compressed objects within 5 object streams
- 87 named destinations out of 1000 (max. 500000)
- 82371 words of extra memory for PDF output out of 89155 (max. 10000000)
+ 535 PDF objects out of 1000 (max. 8388607)
+ 450 compressed objects within 5 object streams
+ 99 named destinations out of 1000 (max. 500000)
+ 85397 words of extra memory for PDF output out of 89155 (max. 10000000)
 

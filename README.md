@@ -1,63 +1,83 @@
-# LaTeX Report Template (Thapathali Campus, DOECE)
+we're doing sky segmentation using mobilenet. we're using geopose3k (has alpine data) + synthetic data of our region from dems (we add fog textures etc). we'll use sliding window euclidean distance + dynamic time warping with sakoe chiba band and early abandoning and pruning. for sliding window euclidean, kinda like mass we use fft cross correlation stuff (not z normalized tho). we use copernicus glo 30m. we dont use faiss (dont say it like this please). for horizon calculation, we use HORAYZON (ray casting) also we do it thrice at different max search radii to accouint for global local restricted horizon in case of fog. btw we use vector index to store it (no faiss or some vector index library probably no).  we use canny edge detection as fallback. for verification, we use google street view. we ve chosen a region (Khumbu) whose trails do have street view. some parts might have fog but there seems to be abundant data. we wont directly validate on panorama but break into pictures then validate. also we verify using train/test split on synthetic data.
 
-This repository is a LaTeX template for **major/minor project** proposal, progress, and final reports.
+    Northwest (NW):
 
-# Important: To use the newer version: just replace the thapathaliece.cls file of your existing repo with the new one given here!
+            
+    86.582∘E
+    86.582∘E
 
-## Quick Start
+          
 
-1. Edit project metadata in [vars.tex](vars.tex) (title, authors, supervisor, dates, etc.).
-2. Write content in the chapter files under [src/chapters/](src/chapters/) and front/back matter under [src/frontmatter/](src/frontmatter/) and [src/backmatter/](src/backmatter/).
-3. Build the PDF from [main.tex](main.tex).
+    ,
 
-## Build (Local)
+            
+    28.041∘N
+    28.041∘N
 
-### Requirements
-- A LaTeX distribution: **MiKTeX** (Windows) or **TeX Live** (Linux/macOS)
-- Recommended: `latexmk` (usually included with the distribution)
+          
 
-### Commands
-From the project root:
-- Clean: `latexmk -C main.tex`
-- Build PDF: `latexmk -pdf main.tex`
+    Northeast (NE):
 
-Tip: If you build into the `build/` folder, use `latexmk -pdf -outdir=build main.tex`.
+            
+    86.989∘E
+    86.989∘E
 
-## Editing Guide
+          
 
-### Main entry
-- [main.tex](main.tex) is the single entry point.
-- It includes the front matter, chapters, appendices, and bibliography.
+    ,
 
-### Where to write
-- Chapters: [src/chapters/](src/chapters/)
-- Front matter (cover, certificate, abstract, ToC/LOF/LOT, etc.): [src/frontmatter/](src/frontmatter/)
-- Back matter/appendices: [src/backmatter/](src/backmatter/)
-- Figures: put images under [src/images/](src/images/) (e.g., [src/images/figures/](src/images/figures/))
+            
+    28.041∘N
+    28.041∘N
 
-### References (BibTeX)
-- Add citations to [references.bib](references.bib)
-- Compile with `latexmk` (it runs BibTeX automatically when needed).
+          
 
-### Glossaries (Acronyms/Symbols)
-- Acronyms: [src/frontmatter/abbreviations.tex](src/frontmatter/abbreviations.tex)
-- Symbols: [src/frontmatter/symbols.tex](src/frontmatter/symbols.tex)
-- If lists are empty, run an extra build (glossaries need multiple passes): `latexmk -pdf main.tex` twice.
+    Southwest (SW):
 
-## Common Issues
+            
+    86.582∘E
+    86.582∘E
 
-- **ToC / List of Figures / List of Tables not updating**: clean and rebuild (`latexmk -C main.tex` then build). These lists are generated from auxiliary files.
-- **Two PDFs**: you may have `main.pdf` (root build) and `build/main.pdf` (outdir build). Open the one you just built.
-- Only glossary entries used in the text appear in the list. To force an entry to appear, use `\glsadd{key}`.
-## Structure Reference
+          
 
-The Markdown files are a checklist/reference only (the actual report is written in LaTeX):
-- [Draft](0_draft.md)
-- [Proposal](1_proposal.md)
-- [Progress Report](2_progress.md)
-- [Final Report](3_final.md)
+    ,
 
-## Editor Recommendations
+            
+    27.770∘N
+    27.770∘N
 
-- VS Code + LaTeX Workshop, TeXstudio, or Overleaf will all work. For VS Code, configure LaTeX Workshop to run `latexmk`.
-- Using VS Code, or Overleaf will make compilation easier. 
+          
+
+    Southeast (SE):
+
+            
+    86.989∘E
+    86.989∘E
+
+          
+
+    ,
+
+            
+    27.770∘N
+    27.770∘N
+
+          
+
+Verification
+
+    Width:
+
+            
+    (86.989−86.582)×98.37 km/deg≈40.0 km
+    (86.989−86.582)×98.37 km/deg≈40.0 km
+
+          
+
+    Height:
+
+            
+    (28.041−27.770)×110.82 km/deg≈30.0 km
+    (28.041−27.770)×110.82 km/deg≈30.0 km
+
+          

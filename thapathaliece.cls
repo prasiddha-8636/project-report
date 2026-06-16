@@ -25,7 +25,6 @@
     listof=flat,
     listof=nochaptergap,
     listof=entryprefix,
-    listof=numbered,
     bibliography=totoc,
     parskip=false  % Disable KOMA's paragraph spacing adjustments
 ]{scrreprt}
@@ -184,7 +183,7 @@
 % HYPERREF (load late in package chain)
 % Use hidelinks option to hide link borders (can be overridden in document)
 \RequirePackage{url}
-\RequirePackage[hidelinks,hypertexnames=false]{hyperref}
+\RequirePackage[hidelinks]{hyperref}
 \hypersetup{
     colorlinks=false,
     linkcolor=black,
@@ -232,9 +231,8 @@
 \setkomafont{chapterentry}{\normalfont\bfseries}
 \setkomafont{chapterentrydots}{\normalfont\bfseries}
 \KOMAoptions{chapterentrydots=true}
+\setcounter{tocdepth}{1}
 \setcounter{secnumdepth}{2}
-\DeclareTOCStyleEntry[numwidth=5em]{default}{figure}
-\DeclareTOCStyleEntry[numwidth=5em]{default}{table}
 
 % ============================================================
 % TYPESETTING

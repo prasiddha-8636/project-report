@@ -1,7 +1,9 @@
 \chapter{EXPECTED RESULTS}
-The project aims to deliver a functional prototype for offline geolocation. The system will extract mountain skylines from user photos and match them against a pre-computed database. Users can view the predicted location on a map alongside the top five matching candidates. Visual overlays will show the extracted skyline and corresponding database horizon to help verify results. Final testing uses Google Street View data to measure the system's effectiveness across the Khumbu trail network.
+The final system will take a mountain photograph as input and return a predicted location and heading. For each query, the output includes the top-ranked matching coordinates on a map, the extracted skyline overlaid against the best-matching database horizon, and a confidence score derived from the DTW alignment cost. Testing on Google Street View imagery from the Khumbu trails \cite{google2015streetview} will measure how often the correct grid cell appears in the top-$k$ results.
 
-
-
-
-
+\begin{figure}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{\input{src/images/page4}}
+    \caption{Expected output interface showing the input photograph, predicted location on a map, profile alignment, and ranked candidate list.}
+    \label{fig:expected_output}
+\end{figure}

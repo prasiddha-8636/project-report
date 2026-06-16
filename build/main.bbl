@@ -21,7 +21,7 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{Pan2020}
+\bibitem{pan2020camera}
 Z.~Pan, J.~Tang, T.~Tjahjadi, X.~Xiao, and Z.~Wu, ``Camera geolocation using
   digital elevation models in hilly area,'' \emph{Applied Sciences}, vol.~10,
   no.~19, p. 6661, 2020.
@@ -32,6 +32,16 @@ C.~R. Steger, B.~Steger, and C.~Sch{\"{a}}r, ``{HORAYZON} v1.2: an efficient
   \emph{Geoscientific Model Development}, vol.~15, no.~17, pp. 6817--6840,
   2022.
 
+\bibitem{baatz2012large}
+G.~Baatz, O.~Saurer, K.~K{\"o}ser, and M.~Pollefeys, ``Large scale visual
+  geo-localization of images in mountainous terrain,'' in \emph{European
+  Conference on Computer Vision (ECCV)}, 2012, pp. 517--530.
+
+\bibitem{saurer2016image}
+O.~Saurer, G.~Baatz, K.~K{\"o}ser, L.~Ladick{\'y}, and M.~Pollefeys, ``Image
+  based geo-localization in the alps,'' \emph{International Journal of Computer
+  Vision}, vol. 116, pp. 213--225, 2016.
+
 \bibitem{Yang2025}
 G.~Yang, M.~Wang, Q.~Zhou, and J.~Li, ``{YUNet}: Improved {YOLOv11} network for
   skyline detection,'' \emph{arXiv preprint arXiv:2502.12449}, 2025.
@@ -41,74 +51,76 @@ J.~Brejcha and M.~{\v{C}}ad{\'\i}k, ``{GeoPose3K}: Mountain landscape dataset
   for camera pose estimation in outdoor environments,'' \emph{Image and Vision
   Computing}, vol.~66, pp. 1--14, 2017.
 
+\bibitem{usery2019topographic}
+E.~L. Usery, D.~E. Varanka, and L.~Davis, ``Topographic mapping evolution: From
+  field and photogrammetric data collection to gis production and linked open
+  data,'' \emph{Cartographic Journal}, vol.~55, no.~4, pp. 378--390, 2019.
+
 \bibitem{Franks2023}
 S.~Franks and R.~Rengarajan, ``Evaluation of {C}opernicus {DEM} and comparison
   to the {DEM} used for landsat collection-2 processing,'' \emph{Remote
   Sensing}, vol.~15, no.~10, p. 2509, 2023.
 
-\bibitem{CrossLocate}
-J.~Tomesek, M.~Cadik, and J.~Brejcha, ``{CrossLocate}: Cross-modal large-scale
-  visual geo-localization in natural environments using rendered modalities,''
-  \url{https://github.com/JanTomesek/CrossLocate}, 2022.
-
-\bibitem{Rakthanmanon2013}
-T.~Rakthanmanon, B.~Campana, A.~Mueen \emph{et~al.}, ``Data mining a trillion
-  time series subsequences under dynamic time warping,'' in \emph{Proceedings
-  of the Twenty-Third International Joint Conference on Artificial
-  Intelligence}, 2013, pp. 3047--3053.
-
-\bibitem{Mueen2022}
-A.~Mueen, S.~Zhong, Y.~Zhu, M.~Yeh, K.~Kamgar, K.~Viswanathan, C.~Gupta, and
-  E.~Keogh, ``The fastest similarity search algorithm for time series
-  subsequences under euclidean distance,''
-  \url{http://www.cs.unm.edu/~mueen/FastestSimilaritySearch.html}, 2022.
-
-\bibitem{Everest_StreetView}
-{Advanced Online Insights}, ``A daring plan to capture everest | street view
-  stories,''
-  \url{https://www.advancedonlineinsights.com/a-daring-plan-to-capture-everest-street-view-stories/},
-  2015.
-
 \bibitem{Trevisani2023}
 S.~Trevisani, T.~N. Skrypitsyna, and I.~V. Florinsky, ``Global digital
   elevation models for terrain morphology analysis in mountain environments:
   insights on {Copernicus GLO-30} and {ALOS AW3D30} for a large {Alpine}
-  area,'' \emph{Environmental Earth Sciences}, 2023.
+  area,'' \emph{Environmental Earth Sciences}, vol.~82, p. 198, 2023.
 
-\bibitem{Guo2023}
-L.~Guo, J.~Li, A.~Dehecq, Z.~Li, X.~Li, and J.~Zhu, ``A new inventory of {High
-  Mountain Asia} surging glaciers derived from multiple elevation datasets
-  since the 1970s,'' \emph{Earth System Science Data}, vol.~15, no.~7, pp.
-  2841--2861, 2023.
+\bibitem{yang2007robust}
+S.~W. Yang, I.~C. Kim, and J.~S. Kim, ``Robust skyline extraction algorithm for
+  mountainous images,'' in \emph{Proceedings of the Second International
+  Conference on Computer Vision Theory and Applications}.\hskip 1em plus 0.5em
+  minus 0.4em\relax SciTePress, 2007, pp. 253--257.
 
-\bibitem{Azmin2024}
-N.~S. H.~N. Azmin \emph{et~al.}, ``Evaluation of global digital elevation model
-  ({GDEM}) over peninsular {Malaysia},'' \emph{International Journal of
-  Geoinformatics}, 2024, tODO: confirm exact volume/issue/pages.
+\bibitem{long2015fully}
+J.~Long, E.~Shelhamer, and T.~Darrell, ``Fully convolutional networks for
+  semantic segmentation,'' in \emph{IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, 2015, pp. 3431--3440.
 
-\bibitem{Keogh2017}
-E.~Keogh, ``The {UCR} matrix profile page,''
-  \url{https://www.cs.ucr.edu/~eamonn/MatrixProfile.html}, 2017, university of
-  California, Riverside.
+\bibitem{howard2019mobilenetv3}
+A.~Howard, M.~Sandler, G.~Chu, L.-C. Chen, B.~Chen, M.~Tan, W.~Wang, Y.~Zhu,
+  R.~Pang, V.~Vasudevan, Q.~V. Le, and H.~Adam, ``Searching for
+  {MobileNetV3},'' in \emph{IEEE/CVF International Conference on Computer
+  Vision (ICCV)}, 2019, pp. 1314--1324.
 
-\bibitem{ReadyTensor2024}
-{Ready Tensor}, ``Distance profile for time-step classification in time series
-  analysis,''
-  \url{https://app.readytensor.ai/publications/distance-profile-for-timestep-classification-in-time-series-analysis-ljGAbBceZbpv},
-  2024.
+\bibitem{tomesek2022cross}
+J.~Tome{\v{s}}ek, M.~{\v{C}}ad{\'\i}k, and J.~Brejcha, ``{CrossLocate}:
+  Cross-modal large-scale visual geo-localization in natural environments using
+  rendered modalities,'' in \emph{IEEE/CVF Winter Conference on Applications of
+  Computer Vision (WACV)}, 2022, pp. 3174--3183.
 
-\bibitem{Li2020}
-H.~Li, J.~Liu, Z.~Yang, R.~W. Liu, K.~Wu, and Y.~Wan, ``Adaptively constrained
-  dynamic time warping for time series classification and clustering,''
-  \emph{Information Sciences}, vol. 534, pp. 97--116, 2020.
+\bibitem{tonge2014parsing}
+R.~Tonge, S.~Maji, and C.~V. Jawahar, ``Parsing world's skylines using
+  shape-constrained mrfs,'' in \emph{IEEE Conference on Computer Vision and
+  Pattern Recognition (CVPR)}, 2014, pp. 2177--2184.
 
-\bibitem{Yu2023}
-H.~Yu, M.~Che, H.~Yu, and Y.~Ma, ``Research on weed identification in soybean
-  fields based on the lightweight segmentation model {DCSAnet},''
-  \emph{Frontiers in Plant Science}, vol.~14, p. 1268218, 2023.
+\bibitem{Rakthanmanon2013}
+T.~Rakthanmanon, B.~Campana, A.~Mueen, G.~Batista, B.~Westover, Q.~Zhu,
+  J.~Zakaria, and E.~Keogh, ``Data mining a trillion time series subsequences
+  under dynamic time warping,'' in \emph{Proceedings of the Twenty-Third
+  International Joint Conference on Artificial Intelligence}, 2013, pp.
+  3047--3053.
 
-\bibitem{HorizonUAV}
-{NovelioPI}, ``{NovelioPI/horizon-detection-for-uav},''
-  \url{https://github.com/NovelioPI/horizon-detection-for-uav}, 2021.
+\bibitem{mueen2024mass}
+A.~Mueen, S.~Zhong, Y.~Zhu, M.~Yeh, K.~Kamgar, K.~Viswanathan, C.~Gupta, and
+  E.~Keogh, ``{MASS}: Distance profile of a query over a time series,''
+  \emph{Data Mining and Knowledge Discovery}, 2024.
+
+\bibitem{google2015streetview}
+{Google LLC}, ``{Street View Treks}: Everest base camp,''
+  \url{https://www.google.com/maps/about/behind-the-scenes/streetview/treks/the-worlds-highest-peaks/},
+  2015.
+
+\bibitem{baboud2011automatic}
+L.~Baboud, M.~Cad{\'i}k, E.~Eisemann, and H.-P. Seidel, ``Automatic
+  photo-to-terrain alignment for the annotation of mountain pictures,'' in
+  \emph{IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  2011, pp. 41--48.
+
+\bibitem{Canny1986}
+J.~Canny, ``A computational approach to edge detection,'' \emph{IEEE
+  Transactions on Pattern Analysis and Machine Intelligence}, vol. PAMI-8,
+  no.~6, pp. 679--698, 1986.
 
 \end{thebibliography}

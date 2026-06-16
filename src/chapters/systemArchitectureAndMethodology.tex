@@ -1,35 +1,44 @@
 \chapter{METHODOLOGY}
 
-\section{Proposed Approach and Tools}
-GNSS signals often fail in deep Himalayan valleys. Visual odometry drifts over long distances. Skyline matching uses stable mountain peaks as fixed landmarks. It works offline without cell service. This method is more reliable than radio-based navigation. 
+\section{System Overview}
+Mountain peaks are permanent geographic features whose shapes, as seen from a given coordinate, are unique. A photograph taken in the Khumbu region encodes the observer's position in the geometry of the visible skyline. This project reconstructs that geometry and matches it against a pre-computed reference database to recover the camera's location and heading.
 
-The system uses the Copernicus 30-meter Digital Elevation Model (DEM). Python is the main language for development. We use the FAISS library for fast vector search. The final deployment target is standard Android portable hardware.
+The system has three stages. First, a reference database of horizon profiles is synthesized from the Copernicus GLO-30 DEM using ray-casting. Second, a neural network segments the sky boundary from a query photograph. Third, a two-phase matching engine aligns the extracted profile against the database to determine coordinates.
 
-\section{System Design and Mathematical Foundation}
-The system consists of three main parts. First, we build a reference database from the DEM. Second, a neural network finds the skyline in photos. Third, we match the photo skyline to the database.
-
-We represent the horizon as a 1D vector of elevation angles.
+\section{Horizon Database Generation}
+We use the HORAYZON ray-casting library \cite{Steger2022} to compute the horizon profile at each viewpoint in our study region. Each profile is a 1D vector of elevation angles:
 \begin{equation}
     V = \{h_1, h_2, \dots, h_{1440}\}
 \end{equation}
-Each value represents a $0.25^\circ$ azimuth step. We assume the earth is a sphere for local ray-casting. Atmospheric refraction is modeled as a constant factor.
+sampled at $0.25^\circ$ azimuth intervals across a full $360^\circ$ sweep. HORAYZON includes an optional correction for atmospheric refraction, which we enable during generation.
+
+Fog and haze are common in the Khumbu valleys and can obscure distant peaks entirely. A single horizon computed at one fixed search radius would fail under these conditions. We therefore compute three horizons per viewpoint at different maximum search radii---global, local, and restricted---so that the matching engine can select the profile that best reflects the observer's actual visibility. The three tiers are stored for each viewpoint and evaluated during matching.
 
 \begin{figure}[htbp]
     \centering
     \resizebox{\textwidth}{!}{\input{src/images/page1}}
-    \caption{Workflow for database generation and skyline matching.}
+    \caption{Raycasting to find the expected horizons at a given viewpoint using progressive search radii.}
     \label{fig:design}
 \end{figure}
 
-\section{Algorithms and Data Processing}
-We generate synthetic horizons via ray-casting. Real-world testing uses Google Street View photospheres. These images provide ground-truth GPS data. We resize all input photos to $512 \times 512$ pixels.
+\section{Skyline Extraction}
+We use a U-Net with a MobileNet-V3 encoder to segment query photographs into sky and terrain \cite{long2015fully, howard2019mobilenetv3}. The model is pre-trained on GeoPose3K \cite{Brejcha2017}, which provides over 3,000 labeled alpine mountain images, and then fine-tuned on synthetic renderings of the Khumbu region generated from the DEM. These synthetic images are augmented with procedural fog textures to better represent local weather. A Canny edge detector \cite{Canny1986} serves as a fallback when the neural network produces low-confidence output.
 
-We use a two-phase search. Phase 1 uses FFT-based cross-correlation for speed. It finds the top 10 candidate locations. Phase 2 uses Dynamic Time Warping (DTW) for precision.
-\begin{itemize}
-    \item \textbf{Search Complexity:} $O(m \log m)$ for Phase 1.
-    \item \textbf{Optimization:} Sakoe-Chiba bands keep DTW linear.
-    \item \textbf{Robustness:} Canny edge detection acts as a backup for the extraction model.
-\end{itemize}
+\begin{figure}[htbp]
+    \centering
+    \resizebox{\textwidth}{!}{\input{src/images/page2}}
+    \caption{Pipeline for skyline extraction from photographs.}
+    \label{fig:skyline_extract}
+\end{figure}
+
+\section{Matching Engine}
+Because the camera heading is unknown, the extracted skyline must be compared against every angular offset of every reference profile in the database. A brute-force search is prohibitively slow, so we split the matching into two phases.
+
+\subsection{Phase 1: Sliding-Window Euclidean Search}
+The query profile is treated as a subsequence that slides across each 1440-point reference vector. We compute the Euclidean distance at every offset using FFT-based cross-correlation, which reduces the per-profile cost from $O(Nm)$ to $O(N \log N)$ \cite{mueen2024mass, Rakthanmanon2013}. We deliberately skip z-normalization so that the absolute elevation values---which carry strong discriminative signal in mountain terrain \cite{tonge2014parsing}---are preserved. This stage produces a ranked short-list of candidate viewpoints.
+
+\subsection{Phase 2: DTW Refinement}
+Differences in camera focal length and tilt introduce non-linear distortions that Euclidean distance cannot absorb. Dynamic Time Warping handles these elastic deformations by allowing the alignment path to stretch or compress locally. We constrain the computation with Sakoe-Chiba bands and apply early abandoning and pruning to discard poor candidates before the full cost matrix is evaluated \cite{Rakthanmanon2013}.
 
 \begin{figure}[htbp]
     \centering
@@ -38,12 +47,5 @@ We use a two-phase search. Phase 1 uses FFT-based cross-correlation for speed. I
     \label{fig:matching_engine}
 \end{figure}
 
-\begin{figure}[htbp]
-    \centering
-    \resizebox{0.85\textwidth}{!}{\input{src/images/page2}}
-    \caption{Pipeline for skyline extraction from photographs.}
-    \label{fig:skyline_extract}
-\end{figure}
-
-
-
+\section{Validation}
+We evaluate the system in two ways. On the synthetic side, we hold out a subset of generated horizons and measure localization accuracy on this test split. For real-world evaluation, we use geotagged panoramas from Google Street View's Everest trail coverage \cite{google2015streetview}. The Khumbu trails have sufficient Street View data for this purpose. Rather than matching directly against full panoramas, we decompose each one into standard perspective photographs and run the pipeline on these individual frames, comparing the predicted coordinates against the known GPS tags.
